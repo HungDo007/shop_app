@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './pages/category_page.dart';
 import './pages/home_page.dart';
 import './pages/sign-in-page.dart';
 import './pages/sign-up-page.dart';
+import './pages/product_detail_page.dart';
 
 import './providers/auth.dart';
 import './providers/categories.dart';
@@ -34,12 +36,23 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.orange,
+          scaffoldBackgroundColor: Colors.white,
         ),
         home: HomePage(),
         routes: {
           "/sign-up": (context) => SignUpPage(),
           "/sign-in": (context) => SignInPage(),
+          CategoryPage.routeName: (context) => CategoryPage(),
+          //ProductDetailPage.routeName: (context) => ProductDetailPage(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == ProductDetailPage.routeName) {
+            final productId = settings.arguments as int;
+            return MaterialPageRoute(builder: (context) {
+              return ProductDetailPage(productId);
+            });
+          }
         },
       ),
     );

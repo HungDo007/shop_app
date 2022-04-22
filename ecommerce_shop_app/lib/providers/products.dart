@@ -34,15 +34,59 @@ class Product {
     required this.images,
     required this.productDetails,
   });
+
+  factory Product.fromJson(dynamic json) {
+    final imageList = json["images"] as List;
+    final productDetailList = json["productDetails"] as List;
+    return Product(
+      id: json["id"] as int,
+      seller: json["seller"],
+      name: json["name"],
+      description: json["description"],
+      categoryId: json["category"],
+      viewCount: json["viewCount"],
+      rate: json["rate"],
+      status: json["status"],
+      price: json["price"],
+      dateCreated: DateTime.parse(json["dateCreated"]),
+      poster: json["poster"],
+      images: imageList.cast<String>(),
+      productDetails: productDetailList.map((productDetail) {
+        final componentDetailList = productDetail["componentDetails"] as List;
+        return ProductDetail(
+          productDetail["id"],
+          productDetail["stock"],
+          productDetail["price"],
+          componentDetailList.map((componentDetail) {
+            return ComponentDetail(
+              componentDetail["id"],
+              componentDetail["compId"],
+              componentDetail["name"],
+              componentDetail["value"],
+            );
+          }).toList(),
+        );
+      }).toList(),
+    );
+  }
 }
 
 class ProductDetail {
   final int id;
   final int stock;
   final double price;
-  final List componentDetails;
+  final List<ComponentDetail> componentDetails;
 
   ProductDetail(this.id, this.stock, this.price, this.componentDetails);
+}
+
+class ComponentDetail {
+  final int id;
+  final int comId;
+  final String name;
+  final String value;
+
+  ComponentDetail(this.id, this.comId, this.name, this.value);
 }
 
 class Products with ChangeNotifier {
@@ -52,46 +96,69 @@ class Products with ChangeNotifier {
     return [..._products];
   }
 
-  Future<void> fetchAndSetProducts() async {
-    final url =
-        Uri.parse('${ApiUrls.baseUrl}/api/Catalogs/product?PageSize=100');
+  Future<void> fetchAndSetProducts(int categoryId, String keyword) async {
+    final url = Uri.parse(
+        '${ApiUrls.baseUrl}/api/Catalogs/product?CatId=$categoryId&Keyword=$keyword&PageSize=100');
+
     try {
       final response = await http.get(url);
-      //final List<Category> loadedCategory = list.cast<Category>();
       final productPaging = json.decode(response.body);
-      // _products = productPaging["items"]
-      //print(productPaging["items"]);
-      var items = productPaging["items"] as List;
-      var productList = items.map((item) {
-        var listImage = item["images"] as List;
-        var listProductDetail = item["productDetails"] as List;
-        return Product(
-          id: item["id"],
-          seller: item["seller"],
-          name: item["name"],
-          description: item["description"],
-          categoryId: item["category"],
-          viewCount: item["viewCount"],
-          rate: item["rate"],
-          status: item["status"],
-          price: item["price"],
-          dateCreated: DateTime.parse(item["dateCreated"]),
-          poster: item["poster"],
-          images: listImage.cast<String>(),
-          productDetails: listProductDetail.map((e) {
-            return ProductDetail(
-              e["id"],
-              e["stock"],
-              e["price"],
-              e["componentDetails"],
-            );
-          }).toList(),
-        );
+      final items = productPaging["items"] as List;
+
+      final productList = items.map((product) {
+        return Product.fromJson(product);
+        // final imageList = product["images"] as List;
+        // final productDetailList = product["productDetails"] as List;
+        // return Product(
+        //   id: product["id"],
+        //   seller: product["seller"],
+        //   name: product["name"],
+        //   description: product["description"],
+        //   categoryId: product["category"],
+        //   viewCount: product["viewCount"],
+        //   rate: product["rate"],
+        //   status: product["status"],
+        //   price: product["price"],
+        //   dateCreated: DateTime.parse(product["dateCreated"]),
+        //   poster: product["poster"],
+        //   images: imageList.cast<String>(),
+        //   productDetails: productDetailList.map((productDetail) {
+        //     final componentDetailList =
+        //         productDetail["componentDetails"] as List;
+        //     return ProductDetail(
+        //       productDetail["id"],
+        //       productDetail["stock"],
+        //       productDetail["price"],
+        //       componentDetailList.map((componentDetail) {
+        //         return ComponentDetail(
+        //           componentDetail["id"],
+        //           componentDetail["comId"],
+        //           componentDetail["name"],
+        //           componentDetail["value"],
+        //         );
+        //       }).toList(),
+        //     );
+        //   }).toList(),
+        // );
       }).toList();
       _products = productList;
       notifyListeners();
     } catch (error) {
-      print(error);
+      rethrow;
+    }
+  }
+
+  Future<Product> fetchProductDetail(int id) async {
+    final url = Uri.parse('${ApiUrls.baseUrl}/api/Catalogs/product/$id');
+
+    try {
+      final response = await http.get(url);
+      var pro = json.decode(response.body);
+      // print(pro);
+      final product = Product.fromJson(pro);
+      return product;
+    } catch (error) {
+      rethrow;
     }
   }
 }

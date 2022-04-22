@@ -43,6 +43,7 @@ class Categories extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: categoryData.categoryItems.length,
                       itemBuilder: (context, index) => CategoryItem(
+                        categoryData.categoryItems[index].id,
                         categoryData.categoryItems[index].name,
                         categoryData.categoryItems[index].image,
                       ),
