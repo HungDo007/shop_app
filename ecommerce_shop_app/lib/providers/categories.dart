@@ -53,7 +53,7 @@ class Categories with ChangeNotifier {
       }).toList();
       notifyListeners();
     } catch (error) {
-      print(error);
+      rethrow;
     }
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './cart_page.dart';
+
 import '../widgets/discount_banner.dart';
 import '../widgets/product_banner.dart';
 import '../widgets/category/categories.dart';
@@ -13,6 +15,9 @@ class HomePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.orange,
+          foregroundColor: Colors.white,
+          automaticallyImplyLeading: false,
           title: Container(
             height: 40,
             decoration: BoxDecoration(
@@ -34,16 +39,16 @@ class HomePage extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, CartPage.routName);
+              },
               icon: Icon(Icons.shopping_cart),
-              color: Colors.white,
             ),
             IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, "/sign-in");
               },
               icon: Icon(Icons.person),
-              color: Colors.white,
             )
           ],
         ),

@@ -33,6 +33,10 @@ class Auth with ChangeNotifier {
             "content-type": "application/json"
           });
       _jwtToken = response.body;
+      if (response.statusCode >= 400) {
+        throw HttpException(response.body);
+      }
+      // print(_jwtToken);
       notifyListeners();
     } catch (error) {
       rethrow;

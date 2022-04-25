@@ -7,8 +7,19 @@ import './category_item.dart';
 class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
+    return Container(
+      // elevation: 5,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset.zero,
+            blurRadius: 20,
+            color: Color(0xFFDADADA),
+          )
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,11 +40,15 @@ class Categories extends StatelessWidget {
             builder: (ctx, dataSnapshot) {
               if (dataSnapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               } else if (dataSnapshot.hasError) {
                 return const Center(
-                  child: Text("An error occurred"),
+                  child: Text("An error occurred! Failed to load categories"),
+                  heightFactor: 5,
                 );
               } else {
                 return SizedBox(

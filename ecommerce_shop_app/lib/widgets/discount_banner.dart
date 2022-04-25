@@ -6,9 +6,8 @@ class DiscountBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      // height: 90,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Color(0xFF4A3298),

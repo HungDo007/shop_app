@@ -20,38 +20,37 @@ class Products extends StatelessWidget {
           return const SliverToBoxAdapter(
             child: Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 50),
+                padding: EdgeInsets.only(top: 10),
                 child: CircularProgressIndicator(),
               ),
             ),
           );
         } else if (dataSnapshot.hasError) {
-          print(dataSnapshot.error);
           return const SliverToBoxAdapter(
             child: Center(
-              child: Text("An error occurred"),
+              child: Text("An error occurred! Failed to load products"),
             ),
           );
         } else {
-          return Consumer<product_provider.Products>(
-            builder: (ctx, products, child) => SliverGrid(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                childAspectRatio: 4 / 5,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return ProductItem(
-                    products.productItems[index].id,
-                    products.productItems[index].name,
-                    products.productItems[index].poster,
-                    products.productItems[index].price,
-                  );
-                },
-                childCount: products.productItems.length,
-              ),
+          List<product_provider.Product> products =
+              dataSnapshot.data as List<product_provider.Product>;
+          return SliverGrid(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 4 / 5,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return ProductItem(
+                  products[index].id,
+                  products[index].name,
+                  products[index].poster,
+                  products[index].price,
+                );
+              },
+              childCount: products.length,
             ),
           );
         }

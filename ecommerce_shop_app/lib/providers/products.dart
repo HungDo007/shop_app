@@ -90,13 +90,14 @@ class ComponentDetail {
 }
 
 class Products with ChangeNotifier {
-  List<Product> _products = [];
+  // List<Product> _products = [];
 
-  List<Product> get productItems {
-    return [..._products];
-  }
+  // List<Product> get productItems {
+  //   return [..._products];
+  // }
 
-  Future<void> fetchAndSetProducts(int categoryId, String keyword) async {
+  Future<List<Product>> fetchAndSetProducts(
+      int categoryId, String keyword) async {
     final url = Uri.parse(
         '${ApiUrls.baseUrl}/api/Catalogs/product?CatId=$categoryId&Keyword=$keyword&PageSize=100');
 
@@ -107,42 +108,8 @@ class Products with ChangeNotifier {
 
       final productList = items.map((product) {
         return Product.fromJson(product);
-        // final imageList = product["images"] as List;
-        // final productDetailList = product["productDetails"] as List;
-        // return Product(
-        //   id: product["id"],
-        //   seller: product["seller"],
-        //   name: product["name"],
-        //   description: product["description"],
-        //   categoryId: product["category"],
-        //   viewCount: product["viewCount"],
-        //   rate: product["rate"],
-        //   status: product["status"],
-        //   price: product["price"],
-        //   dateCreated: DateTime.parse(product["dateCreated"]),
-        //   poster: product["poster"],
-        //   images: imageList.cast<String>(),
-        //   productDetails: productDetailList.map((productDetail) {
-        //     final componentDetailList =
-        //         productDetail["componentDetails"] as List;
-        //     return ProductDetail(
-        //       productDetail["id"],
-        //       productDetail["stock"],
-        //       productDetail["price"],
-        //       componentDetailList.map((componentDetail) {
-        //         return ComponentDetail(
-        //           componentDetail["id"],
-        //           componentDetail["comId"],
-        //           componentDetail["name"],
-        //           componentDetail["value"],
-        //         );
-        //       }).toList(),
-        //     );
-        //   }).toList(),
-        // );
       }).toList();
-      _products = productList;
-      notifyListeners();
+      return productList;
     } catch (error) {
       rethrow;
     }

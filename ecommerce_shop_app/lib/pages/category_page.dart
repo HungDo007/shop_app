@@ -16,8 +16,13 @@ class CategoryPage extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             const SliverAppBar(
-              title: Text("Products"),
+              title: Text(
+                "Products",
+                style: TextStyle(color: Colors.white),
+              ),
               floating: true,
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.orange,
             ),
             SliverToBoxAdapter(
               child: ProductBanner(),

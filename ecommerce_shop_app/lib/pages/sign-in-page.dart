@@ -1,3 +1,5 @@
+import 'package:ecommerce_shop_app/utils/http_exception.dart';
+import 'package:ecommerce_shop_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +29,27 @@ class _SignInPageState extends State<SignInPage> {
         _signInData["username"] ?? "",
         _signInData["password"] ?? "",
       );
+
+      Navigator.pushReplacementNamed(context, "/");
+    } on HttpException catch (error) {
+      var errorMessage = error.toString();
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text("Error"),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
     } catch (error) {
+      print(error);
       rethrow;
     }
   }

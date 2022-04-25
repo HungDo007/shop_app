@@ -33,6 +33,8 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
         _signUpData["email"] ?? "",
         _signUpData["password"] ?? "",
       );
+      var snackBar = SnackBar(content: Text('Sign up successfully!'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pushNamed(context, "/sign-in");
     } on HttpException catch (error) {
       var errorMessage = "Sign up failed";
@@ -45,7 +47,21 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
       } else if (error.toString().contains("Username already used")) {
         errorMessage = "Username already used";
       }
-      print(errorMessage);
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text("Error"),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
     } catch (error) {
       print(error.toString());
     }

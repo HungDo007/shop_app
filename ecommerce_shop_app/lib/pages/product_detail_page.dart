@@ -3,8 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../api/api_url.dart';
 import '../providers/products.dart';
+import '../widgets/custom_button.dart';
 
-class ProductDetailPage extends StatefulWidget {
+class ProductDetailPage extends StatelessWidget {
   // const ProductDetail({ Key? key }) : super(key: key);
   static const routeName = "/product-detail";
 
@@ -13,210 +14,175 @@ class ProductDetailPage extends StatefulWidget {
   ProductDetailPage(this.productId);
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
-}
-
-class _ProductDetailPageState extends State<ProductDetailPage> {
-  Product? product;
-
-  var loading = true;
-
-  @override
-  void initState() {
-    // product = Provider.of<Products>(context, listen: false)
-    //     .fetchProductDetail(widget.productId)
-    //     .then((_) {
-    //   setState(() {
-    //     loading = false;
-    //   });
-    // }) as Product;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    //final productId = ModalRoute.of(context)!.settings.arguments as int;
-    return SafeArea(
-      child: Scaffold(
-        body: FutureBuilder(
-          future: Provider.of<Products>(context)
-              .fetchProductDetail(widget.productId),
-          builder: (ctx, dataSnapshot) {
-            if (dataSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (dataSnapshot.error != null) {
-                // do error handling
-                print(dataSnapshot.error);
-                return const Center(
-                  child: Text("An error occurred"),
-                );
-              } else {
-                final product = dataSnapshot.data as Product;
+    return FutureBuilder(
+      future: Provider.of<Products>(context).fetchProductDetail(productId),
+      builder: (ctx, dataSnapshot) {
+        if (dataSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          if (dataSnapshot.error != null) {
+            return const Center(
+              child: Text("An error occurred"),
+            );
+          } else {
+            final product = dataSnapshot.data as Product;
 
-                product.images.insert(0, product.poster);
-                return Scaffold(
-                  backgroundColor: Color(0xFFF5F6F9),
-                  appBar: AppBar(
-                    title: Text("Product Detail"),
-                    // backgroundColor: Colors.transparent,
-                    // leading: SizedBox(
-                    //   height: 40,
-                    //   width: 40,
-                    //   child: FlatButton(
-                    //     padding: EdgeInsets.zero,
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(50),
-                    //     ),
-                    //     color: Colors.white,
-                    //     onPressed: () {},
-                    //     child: Icon(Icons.arrow_back),
-                    //   ),
-                    // ),
+            product.images.insert(0, product.poster);
+            return SafeArea(
+              child: Scaffold(
+                backgroundColor: Color(0xFFF5F6F9),
+                // extendBodyBehindAppBar: true,
+                appBar: AppBar(
+                  title: Text(
+                    product.name,
+                    style: TextStyle(color: Colors.black),
                   ),
-                  body: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 300,
-                          child: PageView.builder(
-                            itemCount: product.images.length,
-                            // pageSnapping: true,
-                            itemBuilder: (context, pagePosition) {
-                              return Container(
-                                child: Image.network(
-                                  ApiUrls.baseUrl +
-                                      product.images[pagePosition],
-                                  fit: BoxFit.contain,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        TopRoundedContainer(
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Text(
-                                  product.name,
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: 20,
-                                  right: 64,
-                                ),
-                                child: Text(
-                                  "\$${product.price}",
-                                  style: TextStyle(
-                                      color: Colors.redAccent, fontSize: 24),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: 20,
-                                  right: 64,
-                                ),
-                                child: Text(
-                                  product.description,
-                                  maxLines: 3,
-                                ),
-                              ),
-                              TopRoundedContainer(
-                                color: Color(0xFFF6F7F9),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      child: Row(
-                                        children: [
-                                          Text("Component detail"),
-                                          Spacer(),
-                                          RoundedIconButton(
-                                              icon: Icons.remove, press: () {}),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Text("1"),
-                                          ),
-                                          RoundedIconButton(
-                                              icon: Icons.add, press: () {}),
-                                        ],
-                                      ),
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                ),
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 300,
+                        child: PageView.builder(
+                          itemCount: product.images.length,
+                          // pageSnapping: true,
+                          itemBuilder: (context, pagePosition) {
+                            return Container(
+                              child: Image.network(
+                                ApiUrls.baseUrl + product.images[pagePosition],
+                                fit: BoxFit.contain,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
                                     ),
-                                    TopRoundedContainer(
-                                      color: Colors.white,
-                                      child: Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            height: (56),
-                                            child: TextButton(
-                                              style: TextButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                primary: Colors.white,
-                                                backgroundColor:
-                                                    Color(0xFFFF7643),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                "ADD TO CART",
-                                                style: TextStyle(
-                                                  fontSize: (18),
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          )),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      TopRoundedContainer(
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
+                                product.name,
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 20,
+                                right: 64,
+                              ),
+                              child: Text(
+                                "\$${product.price}",
+                                style: TextStyle(
+                                    color: Colors.redAccent, fontSize: 24),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 20,
+                                right: 64,
+                              ),
+                              child: Text(
+                                product.description,
+                                maxLines: 3,
+                              ),
+                            ),
+                            TopRoundedContainer(
+                              color: Color(0xFFF6F7F9),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Row(
+                                      children: [
+                                        Text("Component detail"),
+                                        Spacer(),
+                                        RoundedIconButton(
+                                            icon: Icons.remove, press: () {}),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          child: Text("1"),
+                                        ),
+                                        RoundedIconButton(
+                                            icon: Icons.add, press: () {}),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                );
-              }
-            }
-          },
-        ),
-      ),
+                ),
+                bottomNavigationBar: Container(
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 30,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0, -15),
+                        blurRadius: 20,
+                        color: Color(0xFFDADADA).withOpacity(0.15),
+                      )
+                    ],
+                  ),
+                  child: SafeArea(
+                      child: SizedBox(
+                    width: 190,
+                    child: CustomButton(
+                      text: "ADD TO CARD",
+                      press: () {},
+                    ),
+                  )),
+                ),
+              ),
+            );
+          }
+        }
+      },
     );
   }
 }
