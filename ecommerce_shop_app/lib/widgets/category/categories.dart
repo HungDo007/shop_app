@@ -48,7 +48,7 @@ class Categories extends StatelessWidget {
               } else if (dataSnapshot.hasError) {
                 return const Center(
                   child: Text("An error occurred! Failed to load categories"),
-                  heightFactor: 5,
+                  heightFactor: 2,
                 );
               } else {
                 return SizedBox(

@@ -6,15 +6,16 @@ import '../providers/products.dart';
 import '../widgets/custom_button.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  // const ProductDetail({ Key? key }) : super(key: key);
+  const ProductDetailPage({Key? key}) : super(key: key);
   static const routeName = "/product-detail";
 
-  final int productId;
+  // final int productId;
 
-  ProductDetailPage(this.productId);
+  // ProductDetailPage(this.productId);
 
   @override
   Widget build(BuildContext context) {
+    final productId = ModalRoute.of(context)!.settings.arguments as int;
     return FutureBuilder(
       future: Provider.of<Products>(context).fetchProductDetail(productId),
       builder: (ctx, dataSnapshot) {
@@ -36,12 +37,10 @@ class ProductDetailPage extends StatelessWidget {
                 backgroundColor: Color(0xFFF5F6F9),
                 // extendBodyBehindAppBar: true,
                 appBar: AppBar(
-                  title: Text(
-                    product.name,
-                    style: TextStyle(color: Colors.black),
-                  ),
+                  title: Text(product.name),
                   elevation: 0,
                   backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.black,
                 ),
                 body: SingleChildScrollView(
                   child: Column(
@@ -119,28 +118,23 @@ class ProductDetailPage extends StatelessWidget {
                             ),
                             TopRoundedContainer(
                               color: Color(0xFFF6F7F9),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Row(
-                                      children: [
-                                        Text("Component detail"),
-                                        Spacer(),
-                                        RoundedIconButton(
-                                            icon: Icons.remove, press: () {}),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          child: Text("1"),
-                                        ),
-                                        RoundedIconButton(
-                                            icon: Icons.add, press: () {}),
-                                      ],
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  children: [
+                                    // Text("Component detail"),
+                                    // Spacer(),
+                                    RoundedIconButton(
+                                        icon: Icons.remove, press: () {}),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text("1"),
                                     ),
-                                  ),
-                                ],
+                                    RoundedIconButton(
+                                        icon: Icons.add, press: () {}),
+                                  ],
+                                ),
                               ),
                             )
                           ],
@@ -237,14 +231,14 @@ class RoundedIconButton extends StatelessWidget {
             BoxShadow(
               offset: Offset(0, 6),
               blurRadius: 10,
-              color: Color(0xFFB0B0B0).withOpacity(0.2),
+              color: const Color(0xFFB0B0B0).withOpacity(0.2),
             ),
         ],
       ),
       child: TextButton(
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
-          primary: Color(0xFFFF7643),
+          primary: const Color(0xFFFF7643),
           backgroundColor: Colors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

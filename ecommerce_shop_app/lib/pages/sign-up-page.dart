@@ -1,13 +1,14 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 import '../utils/http_exception.dart';
+import './sign-in-page.dart';
 
 class SignUpPage extends StatefulWidget {
   // const SignUpPage({Key? key}) : super(key: key);
+
+  static const routeName = "/sign-up";
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -28,13 +29,16 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
     }
     _formKey.currentState?.save();
     try {
-      await Provider.of<Auth>(context, listen: false).signUp(
-        _signUpData["username"] ?? "",
-        _signUpData["email"] ?? "",
-        _signUpData["password"] ?? "",
+      // await Provider.of<Auth>(context, listen: false).signUp(
+      //   _signUpData["username"] ?? "",
+      //   _signUpData["email"] ?? "",
+      //   _signUpData["password"] ?? "",
+      // );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Sign up successfully!'),
+        ),
       );
-      var snackBar = SnackBar(content: Text('Sign up successfully!'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pushNamed(context, "/sign-in");
     } on HttpException catch (error) {
       var errorMessage = "Sign up failed";
@@ -184,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamed(context, SignInPage.routeName);
                       },
                     ),
                   ],

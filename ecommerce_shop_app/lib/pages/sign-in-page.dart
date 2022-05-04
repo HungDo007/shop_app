@@ -7,6 +7,7 @@ import '../providers/auth.dart';
 
 class SignInPage extends StatefulWidget {
   // const SignInPage({Key? key}) : super(key: key);
+  static const routeName = "/sign-in";
 
   @override
   State<SignInPage> createState() => _SignInPageState();

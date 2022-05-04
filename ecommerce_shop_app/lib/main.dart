@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './pages/tab_page.dart';
 import './pages/cart_page.dart';
-import './pages/home_page.dart';
 import './pages/sign-in-page.dart';
 import './pages/sign-up-page.dart';
+import './pages/edit_product.dart';
+import './pages/store_profile.dart';
 import './pages/category_page.dart';
+import './pages/user_order_page.dart';
+import './pages/user_profile_page.dart';
+import './pages/seller_order_page.dart';
+import './pages/manage_product_page.dart';
 import './pages/product_detail_page.dart';
 
 import './providers/auth.dart';
-import './providers/categories.dart';
 import './providers/products.dart';
+import './providers/categories.dart';
 
 import 'theme.dart';
 
@@ -39,22 +45,29 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: theme(),
-        home: HomePage(),
+        home: TabPage(),
         routes: {
-          "/sign-up": (context) => SignUpPage(),
-          "/sign-in": (context) => SignInPage(),
+          SignInPage.routeName: (context) => SignInPage(),
+          SignUpPage.routeName: (context) => SignUpPage(),
           CartPage.routName: (context) => CartPage(),
           CategoryPage.routeName: (context) => CategoryPage(),
-          //ProductDetailPage.routeName: (context) => ProductDetailPage(),
+          ProductDetailPage.routeName: (context) => const ProductDetailPage(),
+          UserProfilePage.routeName: (context) => const UserProfilePage(),
+          UserOrderPage.routeName: (context) => UserOrderPage(),
+          StoreProfile.routeName: (context) => StoreProfile(),
+          ManageProductPage.routeName: (context) => ManageProductPage(),
+          SellerOrderPage.routeName: (context) => SellerOrderPage(),
+          EditProduct.routeName: (context) => EditProduct(),
         },
-        onGenerateRoute: (settings) {
-          if (settings.name == ProductDetailPage.routeName) {
-            final productId = settings.arguments as int;
-            return MaterialPageRoute(builder: (context) {
-              return ProductDetailPage(productId);
-            });
-          }
-        },
+        // onGenerateRoute: (settings) {
+        //   if (settings.name == ProductDetailPage.routeName) {
+        //     final productId = settings.arguments as int;
+        //     return MaterialPageRoute(
+        //       builder: (context) => ProductDetailPage(productId),
+        //     );
+        //   }
+        //   return null;
+        // },
       ),
     );
   }

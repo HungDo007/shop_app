@@ -13,10 +13,7 @@ class CartPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            "Your Cart",
-            style: TextStyle(color: Colors.black),
-          ),
+          title: Text("Your Cart"),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -122,7 +119,7 @@ class CheckOutCard extends StatelessWidget {
                       text: "\$125.5",
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.black,
+                        color: Colors.redAccent,
                       ),
                     ),
                   ]),
