@@ -29,11 +29,11 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
     }
     _formKey.currentState?.save();
     try {
-      // await Provider.of<Auth>(context, listen: false).signUp(
-      //   _signUpData["username"] ?? "",
-      //   _signUpData["email"] ?? "",
-      //   _signUpData["password"] ?? "",
-      // );
+      await Provider.of<Auth>(context, listen: false).signUp(
+        _signUpData["username"] ?? "",
+        _signUpData["email"] ?? "",
+        _signUpData["password"] ?? "",
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Sign up successfully!'),

@@ -1,13 +1,22 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import "package:http/http.dart" as http;
 
+import '../api/http_client.dart';
 import '../api/api_url.dart';
+import '../utils/handle.dart';
 import '../utils/http_exception.dart';
 
+class UserInfo {
+  String email = '';
+  String username = '';
+}
+
 class Auth with ChangeNotifier {
-  String _jwtToken = "";
+  String _jwtToken = '';
+  final _user = UserInfo();
 
   bool get isAuthenticate {
     return _jwtToken.isNotEmpty;
@@ -20,23 +29,31 @@ class Auth with ChangeNotifier {
     return "";
   }
 
+  UserInfo get userInfo {
+    if (_jwtToken.isNotEmpty) {
+      var user = Handle.parseJwt(_jwtToken);
+      _user.email = user['email'];
+      _user.username = user['unique_name'];
+    }
+    return _user;
+  }
+
   Future<void> signIn(String username, String password) async {
     final url = Uri.parse('${ApiUrls.baseUrl}/api/Users/authenticate');
     try {
-      final response = await http.post(url,
-          body: json.encode({
-            "username": username,
-            "password": password,
-          }),
-          headers: {
-            "Accept": "application/json",
-            "content-type": "application/json"
-          });
+      final response = await HttpClient().post(
+        url,
+        body: json.encode({
+          'username': username,
+          'password': password,
+        }),
+      );
       _jwtToken = response.body;
+      const storage = FlutterSecureStorage();
+      await storage.write(key: 'jwtToken', value: _jwtToken);
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
       }
-      // print(_jwtToken);
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -48,22 +65,27 @@ class Auth with ChangeNotifier {
     try {
       final response = await http.post(url,
           body: json.encode({
-            "userName": username,
-            "email": email,
-            "password": password,
-          }),
-          headers: {
-            "Accept": "application/json",
-            "content-type": "application/json"
-          });
+            'userName': username,
+            'email': email,
+            'password': password,
+          }));
       if (response.statusCode >= 400) {
         final responseData = json.decode(response.body) as List;
         var responseStr = responseData.cast<String>();
-        throw HttpException(responseStr.join("-"));
+        throw HttpException(responseStr.join('-'));
       }
-      notifyListeners();
+      // notifyListeners();
     } catch (error) {
       rethrow;
     }
+  }
+
+  void signOut() {
+    _jwtToken = '';
+    _user.email = '';
+    _user.username = '';
+    const storage = FlutterSecureStorage();
+    storage.deleteAll();
+    notifyListeners();
   }
 }

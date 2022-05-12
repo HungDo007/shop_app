@@ -9,7 +9,7 @@ class ProductItem extends StatelessWidget {
   final int id;
   final String name;
   final String imageUrl;
-  final double price;
+  final num price;
 
   ProductItem(this.id, this.name, this.imageUrl, this.price);
 

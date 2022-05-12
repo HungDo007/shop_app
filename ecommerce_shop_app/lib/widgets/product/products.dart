@@ -26,14 +26,14 @@ class Products extends StatelessWidget {
             ),
           );
         } else if (dataSnapshot.hasError) {
+          print(dataSnapshot.error);
           return const SliverToBoxAdapter(
             child: Center(
               child: Text("An error occurred! Failed to load products"),
             ),
           );
         } else {
-          List<product_provider.Product> products =
-              dataSnapshot.data as List<product_provider.Product>;
+          final products = dataSnapshot.data as List<product_provider.Product>;
           return SliverGrid(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200,

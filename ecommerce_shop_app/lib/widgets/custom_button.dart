@@ -7,7 +7,7 @@ class CustomButton extends StatelessWidget {
     this.press,
   }) : super(key: key);
   final String? text;
-  final Function? press;
+  final VoidCallback? press;
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +19,14 @@ class CustomButton extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           primary: Colors.white,
-          backgroundColor: Color(0xFFFF7643),
+          backgroundColor: press != null
+              ? const Color(0xFFFF7643)
+              : const Color.fromARGB(255, 158, 160, 166),
         ),
-        onPressed: press as void Function()?,
+        onPressed: press,
         child: Text(
           text!,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: (18),
             color: Colors.white,
           ),

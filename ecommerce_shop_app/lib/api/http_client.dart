@@ -1,17 +1,24 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 
 class HttpClient extends http.BaseClient {
-  http.Client _httpClient = http.Client();
+  final _httpClient = http.Client();
 
   @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) {
-    final url = Uri.parse(
-        "https://shop-app-58d69-default-rtdb.asia-southeast1.firebasedatabase.app/products.json");
-    
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    const storage = FlutterSecureStorage();
+    Map<String, String> defaultHeaders = {
+      'Accept': 'application/json',
+      'content-type': 'application/json'
+    };
+    final token = await storage.read(key: 'jwtToken');
+    if (token != null) {
+      defaultHeaders.addAll({'Authorization': 'Bearer ${json.decode(token)}'});
+    }
+    request.headers.addAll(defaultHeaders);
     return _httpClient.send(request);
-
   }
 }

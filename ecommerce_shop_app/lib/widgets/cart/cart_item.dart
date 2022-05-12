@@ -1,59 +1,96 @@
+import 'package:ecommerce_shop_app/api/api_url.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/cart.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({
-    Key? key,
-  }) : super(key: key);
+  // const CartItem({Key? key}) : super(key: key);
+
+  final Cart cartItem;
+
+  const CartItem({Key? key, required this.cartItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      SizedBox(
-        width: 88,
-        child: AspectRatio(
-          aspectRatio: 0.88,
-          child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Color(0xFFF5F6F9),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Image.network(
-                "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"),
-          ),
+    return Dismissible(
+      key: Key(cartItem.cartId.toString()),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 40,
+        ),
+        padding: const EdgeInsets.only(right: 20),
+        margin: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).errorColor,
+          borderRadius: BorderRadius.circular(15),
         ),
       ),
-      const SizedBox(
-        width: 20,
-      ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      onDismissed: (direction) {
+        Provider.of<Carts>(context, listen: false)
+            .removeCartItem([cartItem.cartId]);
+      },
+      child: Row(
         children: [
-          Text(
-            "Product",
-            style: TextStyle(fontSize: 16, color: Colors.black),
-            maxLines: 2,
+          Flexible(
+            child: SizedBox(
+              width: 88,
+              child: AspectRatio(
+                aspectRatio: 0.88,
+                child: Image.network(ApiUrls.baseUrl + cartItem.productImg),
+              ),
+            ),
           ),
-          SizedBox(
-            height: 10,
+          const SizedBox(
+            width: 20,
           ),
-          Text.rich(
-            TextSpan(
-                text: "price",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.redAccent,
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  cartItem.name,
+                  style: const TextStyle(fontSize: 16, color: Colors.black),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  cartItem.details,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text.rich(
                   TextSpan(
-                      text: " x2",
-                      style: TextStyle(
-                        color: Colors.grey,
-                      )),
-                ]),
-          )
+                      text: "\$${cartItem.price}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.redAccent,
+                      ),
+                      children: [
+                        TextSpan(
+                            text: " x${cartItem.quantity}",
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            )),
+                      ]),
+                )
+              ],
+            ),
+          ),
         ],
-      )
-    ]);
+      ),
+    );
   }
 }

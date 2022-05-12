@@ -1,9 +1,10 @@
-import 'package:ecommerce_shop_app/utils/http_exception.dart';
-import 'package:ecommerce_shop_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
+
+import '../providers/cart.dart';
+import '../utils/http_exception.dart';
 
 class SignInPage extends StatefulWidget {
   // const SignInPage({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _SignInPageState extends State<SignInPage> {
         _signInData["username"] ?? "",
         _signInData["password"] ?? "",
       );
-
+      await Provider.of<Carts>(context, listen: false).getCart();
       Navigator.pushReplacementNamed(context, "/");
     } on HttpException catch (error) {
       var errorMessage = error.toString();

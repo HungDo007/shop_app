@@ -1,3 +1,4 @@
+import 'package:ecommerce_shop_app/providers/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Products(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => Carts(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -51,7 +55,7 @@ class MyApp extends StatelessWidget {
           SignUpPage.routeName: (context) => SignUpPage(),
           CartPage.routName: (context) => CartPage(),
           CategoryPage.routeName: (context) => CategoryPage(),
-          ProductDetailPage.routeName: (context) => const ProductDetailPage(),
+          // ProductDetailPage.routeName: (context) => ProductDetailPage(),
           UserProfilePage.routeName: (context) => const UserProfilePage(),
           UserOrderPage.routeName: (context) => UserOrderPage(),
           StoreProfile.routeName: (context) => StoreProfile(),
@@ -59,15 +63,15 @@ class MyApp extends StatelessWidget {
           SellerOrderPage.routeName: (context) => SellerOrderPage(),
           EditProduct.routeName: (context) => EditProduct(),
         },
-        // onGenerateRoute: (settings) {
-        //   if (settings.name == ProductDetailPage.routeName) {
-        //     final productId = settings.arguments as int;
-        //     return MaterialPageRoute(
-        //       builder: (context) => ProductDetailPage(productId),
-        //     );
-        //   }
-        //   return null;
-        // },
+        onGenerateRoute: (settings) {
+          if (settings.name == ProductDetailPage.routeName) {
+            final productId = settings.arguments as int;
+            return MaterialPageRoute(
+              builder: (context) => ProductDetailPage(productId),
+            );
+          }
+          return null;
+        },
       ),
     );
   }

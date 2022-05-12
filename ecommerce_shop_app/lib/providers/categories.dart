@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecommerce_shop_app/api/http_client.dart';
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
 
@@ -9,12 +10,12 @@ class Category {
   final int id;
   final String name;
   final String image;
-  final bool status;
+  
   final List parent;
   final bool isShowAtHome;
 
-  Category(this.id, this.name, this.image, this.status, this.parent,
-      this.isShowAtHome);
+  Category(this.id, this.name, this.image, this.parent,
+      this.isShowAtHome,);
 
   // factory Category.fromMap(Map<String, dynamic> json) {
   //   return Category(
@@ -38,15 +39,15 @@ class Categories with ChangeNotifier {
   Future<void> fetchAndSetCategories() async {
     final url = Uri.parse('${ApiUrls.baseUrl}/api/Catalogs/category');
     try {
-      final response = await http.get(url);
+      // final response = await http.get(url);
+      final response = await HttpClient().get(url);
       var categoryList = json.decode(response.body) as List;
       //final List<Category> loadedCategory = list.cast<Category>();
-      _categories = categoryList.map((item) {
+    _categories = categoryList.map((item) {
         return Category(
           item["id"],
           item["name"],
           item["image"],
-          item["status"],
           item["parent"],
           item["isShowAtHome"],
         );

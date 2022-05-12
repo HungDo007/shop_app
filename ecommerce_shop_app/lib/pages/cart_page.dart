@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/cart.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/cart/cart_item.dart';
+import '../widgets/cart/shop_item.dart';
 
 class CartPage extends StatelessWidget {
   // const CartPage({ Key? key }) : super(key: key);
@@ -13,40 +17,48 @@ class CartPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Your Cart"),
+          title: const Text("Your Cart"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: ListView.separated(
-            itemCount: 10,
-            itemBuilder: (ctx, index) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Dismissible(
-                key: Key("value"),
-                child: CartItem(),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  child: Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                  padding: EdgeInsets.only(right: 20),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).errorColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                onDismissed: (direction) {},
-              ),
-            ),
-            separatorBuilder: (context, index) => Divider(height: 1),
-          ),
+        body: FutureBuilder(
+          future: Provider.of<Carts>(context, listen: false).getCart(),
+          builder: (context, cartSnapshot) {
+            if (cartSnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (cartSnapshot.hasError) {
+                return const Center(
+                  child: Text("An error occurred!"),
+                );
+              } else {
+                final carts = cartSnapshot.data as List<Cart>;
+                final shopItems = [];
+                for (var element in carts) {
+                  if (!shopItems
+                      .any((item) => item["shopName"] == element.shopName)) {
+                    var obj = {
+                      "shopName": element.shopName,
+                      "items": carts
+                          .where((cart) => cart.shopName == element.shopName)
+                          .toList(),
+                    };
+                    shopItems.add(obj);
+                  }
+                }
+                return ListView.builder(
+                  itemCount: shopItems.length,
+                  itemBuilder: (ctx, index) {
+                    var shopItem = shopItems[index]["items"] as List<Cart>;
+                    return ShopItem(
+                      shopName: shopItems[index]["shopName"],
+                      items: shopItem,
+                    );
+                  },
+                );
+              }
+            }
+          },
         ),
         bottomNavigationBar: CheckOutCard(),
       ),
@@ -62,14 +74,14 @@ class CheckOutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 15,
         horizontal: 30,
       ),
       // height: 174,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
@@ -82,56 +94,35 @@ class CheckOutCard extends StatelessWidget {
         ],
       ),
       child: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF5F6F9),
-                    borderRadius: BorderRadius.circular(10),
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F6F9),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.price_check_outlined),
+            ),
+            Text.rich(
+              TextSpan(text: "Total: \n", children: [
+                TextSpan(
+                  text: '\$${Provider.of<Carts>(context).totalAmount}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.redAccent,
                   ),
-                  child: Icon(Icons.price_check_outlined),
                 ),
-                Spacer(),
-                Text("Add voucher code"),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(
-                  Icons.arrow_forward,
-                  size: 12,
-                )
-              ],
+              ]),
             ),
             SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text.rich(
-                  TextSpan(text: "Total: \n", children: [
-                    TextSpan(
-                      text: "\$125.5",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.redAccent,
-                      ),
-                    ),
-                  ]),
-                ),
-                SizedBox(
-                  width: 190,
-                  child: CustomButton(
-                    text: "Checkout",
-                    press: () {},
-                  ),
-                )
-              ],
+              width: 190,
+              child: CustomButton(
+                text: "Checkout",
+                press: () {},
+              ),
             )
           ],
         ),

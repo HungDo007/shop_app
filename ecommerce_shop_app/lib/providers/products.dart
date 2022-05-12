@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecommerce_shop_app/data.dart';
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
 import '../api/api_url.dart';
@@ -13,7 +14,7 @@ class Product {
   final int viewCount;
   final int rate;
   final int status;
-  final double price;
+  final num price;
   final DateTime dateCreated;
   final String poster;
   final List<String> images;
@@ -39,7 +40,7 @@ class Product {
     final imageList = json["images"] as List;
     final productDetailList = json["productDetails"] as List;
     return Product(
-      id: json["id"] as int,
+      id: json["id"],
       seller: json["seller"],
       name: json["name"],
       description: json["description"],
@@ -110,6 +111,13 @@ class Products with ChangeNotifier {
         return Product.fromJson(product);
       }).toList();
       return productList;
+
+      //data from file
+      // var pro = Data.products;
+      // final product = pro.map((product) {
+      //   return Product.fromJson(product);
+      // }).toList();
+      // return product;
     } catch (error) {
       rethrow;
     }

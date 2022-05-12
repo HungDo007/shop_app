@@ -20,8 +20,20 @@ class HomePage extends StatelessWidget {
             SliverToBoxAdapter(
               child: Categories(),
             ),
+            // SliverToBoxAdapter(
+            //   child: DiscountBanner(),
+            // ),
             SliverToBoxAdapter(
-              child: DiscountBanner(),
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                child: const Text(
+                  "PRODUCT",
+                  style: TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
             Products(0, ""),
           ],
