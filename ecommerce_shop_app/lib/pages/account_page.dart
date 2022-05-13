@@ -6,8 +6,8 @@ import '../widgets/menu_item.dart';
 
 import './sign-in-page.dart';
 import './sign-up-page.dart';
-import './user_profile_page.dart';
 import './user_order_page.dart';
+import './user_profile_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -72,7 +72,9 @@ class AccountPage extends StatelessWidget {
               text: "Profile",
               icon: (Icons.account_box_rounded),
               press: () {
-                Navigator.pushNamed(context, UserProfilePage.routeName);
+                Provider.of<Auth>(context, listen: false).isAuthenticate
+                        ? Navigator.pushNamed(context, UserProfilePage.routeName) :
+                Navigator.pushNamed(context, SignInPage.routeName);
               },
             ),
             MenuItem(

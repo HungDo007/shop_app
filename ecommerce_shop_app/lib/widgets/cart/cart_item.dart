@@ -1,12 +1,10 @@
-import 'package:ecommerce_shop_app/api/api_url.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../api/api_url.dart';
 import '../../providers/cart.dart';
 
 class CartItem extends StatelessWidget {
-  // const CartItem({Key? key}) : super(key: key);
-
   final Cart cartItem;
 
   const CartItem({Key? key, required this.cartItem}) : super(key: key);
@@ -39,6 +37,13 @@ class CartItem extends StatelessWidget {
       },
       child: Row(
         children: [
+          Consumer<Carts>(
+            builder: (context, cart, child) => Checkbox(
+                value: cartItem.selected,
+                onChanged: (value) {
+                  cart.setSelected(cartItem.cartId, value!);
+                }),
+          ),
           Flexible(
             child: SizedBox(
               width: 88,

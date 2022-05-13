@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
-import '../widgets/custom_button.dart';
+
+import './checkout_page.dart';
+
 import '../widgets/cart/shop_item.dart';
+import '../widgets/custom_button.dart';
 
 class CartPage extends StatelessWidget {
   // const CartPage({ Key? key }) : super(key: key);
 
-  static const routName = "/cart";
+  static const routeName = "/cart";
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +35,21 @@ class CartPage extends StatelessWidget {
                   child: Text("An error occurred!"),
                 );
               } else {
-                final carts = cartSnapshot.data as List<Cart>;
-                final shopItems = [];
-                for (var element in carts) {
-                  if (!shopItems
-                      .any((item) => item["shopName"] == element.shopName)) {
-                    var obj = {
-                      "shopName": element.shopName,
-                      "items": carts
-                          .where((cart) => cart.shopName == element.shopName)
-                          .toList(),
-                    };
-                    shopItems.add(obj);
-                  }
-                }
+                // final carts = cartSnapshot.data as List<Cart>;
+                // final shopItems = [];
+                // for (var element in carts) {
+                //   if (!shopItems
+                //       .any((item) => item["shopName"] == element.shopName)) {
+                //     var obj = {
+                //       "shopName": element.shopName,
+                //       "items": carts
+                //           .where((cart) => cart.shopName == element.shopName)
+                //           .toList(),
+                //     };
+                //     shopItems.add(obj);
+                //   }
+                // }
+                final shopItems = Provider.of<Carts>(context).shopItems;
                 return ListView.builder(
                   itemCount: shopItems.length,
                   itemBuilder: (ctx, index) {
@@ -67,16 +71,14 @@ class CartPage extends StatelessWidget {
 }
 
 class CheckOutCard extends StatelessWidget {
-  const CheckOutCard({
-    Key? key,
-  }) : super(key: key);
+  const CheckOutCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 15,
-        horizontal: 30,
+        horizontal: 10,
       ),
       // height: 174,
       decoration: BoxDecoration(
@@ -95,7 +97,6 @@ class CheckOutCard extends StatelessWidget {
       ),
       child: SafeArea(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               height: 40,
@@ -106,6 +107,17 @@ class CheckOutCard extends StatelessWidget {
               ),
               child: const Icon(Icons.price_check_outlined),
             ),
+            const Spacer(),
+            Consumer<Carts>(
+              builder: (context, cart, child) => Checkbox(
+                  value: cart.cartItems
+                      .every((cartItem) => cartItem.selected == true),
+                  onChanged: (value) {
+                    cart.setSelected(-1, value!);
+                  }),
+            ),
+            const Text("All"),
+            const Spacer(),
             Text.rich(
               TextSpan(text: "Total: \n", children: [
                 TextSpan(
@@ -117,11 +129,16 @@ class CheckOutCard extends StatelessWidget {
                 ),
               ]),
             ),
+            const SizedBox(
+              width: 10,
+            ),
             SizedBox(
-              width: 190,
+              width: 180,
               child: CustomButton(
                 text: "Checkout",
-                press: () {},
+                press: Provider.of<Carts>(context).selectedCartItems.isNotEmpty
+                    ? () => Navigator.pushNamed(context, CheckoutPage.routeName)
+                    : null,
               ),
             )
           ],

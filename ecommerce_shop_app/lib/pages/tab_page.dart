@@ -67,7 +67,7 @@ class _TabPageState extends State<TabPage> {
                 child: IconButton(
                   onPressed: () {
                     Provider.of<Auth>(context, listen: false).isAuthenticate
-                        ? Navigator.pushNamed(context, CartPage.routName)
+                        ? Navigator.pushNamed(context, CartPage.routeName)
                         : Navigator.pushNamed(context, SignInPage.routeName);
                   },
                   icon: const Icon(Icons.shopping_cart),

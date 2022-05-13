@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 
 import '../api/http_client.dart';
-// import "package:http/http.dart" as http;
 
 import '../api/api_url.dart';
 
 class Cart {
   final String shopName;
+  final String seller;
   final int cartId;
   final int productId;
   final String name;
@@ -18,9 +17,11 @@ class Cart {
   final int quantity;
   final double price;
   final int stockOfDetail;
+  bool selected;
 
   Cart({
     required this.shopName,
+    required this.seller,
     required this.cartId,
     required this.productId,
     required this.name,
@@ -29,11 +30,13 @@ class Cart {
     required this.quantity,
     required this.price,
     required this.stockOfDetail,
+    this.selected = false,
   });
 
   factory Cart.fromJson(dynamic json) {
     return Cart(
       shopName: json["shopName"],
+      seller: json["seller"],
       cartId: json["cartId"],
       productId: json["productId"],
       name: json["name"],
@@ -49,16 +52,47 @@ class Cart {
 class Carts with ChangeNotifier {
   List<Cart> cartItems = [];
 
+  List<Cart> get selectedCartItems {
+    return cartItems.where((cartItem) => cartItem.selected == true).toList();
+  }
+
   int get itemCount {
     return cartItems.isEmpty ? 0 : cartItems.length;
   }
 
+  void setSelected(int id, bool value) {
+    if (id == -1) {
+      for (var cartItem in cartItems) {
+        cartItem.selected = value;
+      }
+    } else {
+      final cart = cartItems.firstWhere((cartItem) => cartItem.cartId == id);
+      cart.selected = value;
+    }
+    notifyListeners();
+  }
+
   double get totalAmount {
     var total = 0.0;
-    for (var cartItem in cartItems) {
+    for (var cartItem in selectedCartItems) {
       total += cartItem.price * cartItem.quantity;
     }
     return total;
+  }
+
+  List get shopItems {
+    final shopItems = [];
+    for (var element in cartItems) {
+      if (!shopItems.any((item) => item["shopName"] == element.shopName)) {
+        var obj = {
+          "shopName": element.shopName,
+          "items":
+              cartItems.where((cart) => cart.shopName == element.shopName).toList(),
+        };
+        shopItems.add(obj);
+      }
+    }
+    return shopItems;
   }
 
   Future<void> addToCart(int productDetailId, int amount) async {

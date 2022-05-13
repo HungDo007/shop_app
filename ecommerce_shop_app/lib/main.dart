@@ -1,4 +1,3 @@
-import 'package:ecommerce_shop_app/providers/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +8,7 @@ import './pages/sign-up-page.dart';
 import './pages/edit_product.dart';
 import './pages/store_profile.dart';
 import './pages/category_page.dart';
+import './pages/checkout_page.dart';
 import './pages/user_order_page.dart';
 import './pages/user_profile_page.dart';
 import './pages/seller_order_page.dart';
@@ -16,6 +16,7 @@ import './pages/manage_product_page.dart';
 import './pages/product_detail_page.dart';
 
 import './providers/auth.dart';
+import './providers/cart.dart';
 import './providers/products.dart';
 import './providers/categories.dart';
 
@@ -43,7 +44,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Carts(),
+
         ),
+        // ChangeNotifierProvider.value(
+        //   create: (ctx) => Cart()),
+          
+        // ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -53,7 +59,7 @@ class MyApp extends StatelessWidget {
         routes: {
           SignInPage.routeName: (context) => SignInPage(),
           SignUpPage.routeName: (context) => SignUpPage(),
-          CartPage.routName: (context) => CartPage(),
+          CartPage.routeName: (context) => CartPage(),
           CategoryPage.routeName: (context) => CategoryPage(),
           // ProductDetailPage.routeName: (context) => ProductDetailPage(),
           UserProfilePage.routeName: (context) => const UserProfilePage(),
@@ -62,6 +68,7 @@ class MyApp extends StatelessWidget {
           ManageProductPage.routeName: (context) => ManageProductPage(),
           SellerOrderPage.routeName: (context) => SellerOrderPage(),
           EditProduct.routeName: (context) => EditProduct(),
+          CheckoutPage.routeName: (context) => CheckoutPage(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == ProductDetailPage.routeName) {

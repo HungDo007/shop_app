@@ -49,8 +49,10 @@ class Auth with ChangeNotifier {
         }),
       );
       _jwtToken = response.body;
+      final user = Handle.parseJwt(_jwtToken);
       const storage = FlutterSecureStorage();
       await storage.write(key: 'jwtToken', value: _jwtToken);
+      await storage.write(key: 'user', value: json.encode(user));
       if (response.statusCode >= 400) {
         throw HttpException(response.body);
       }
@@ -65,7 +67,7 @@ class Auth with ChangeNotifier {
     try {
       final response = await http.post(url,
           body: json.encode({
-            'userName': username,
+            'userName': username, 
             'email': email,
             'password': password,
           }));

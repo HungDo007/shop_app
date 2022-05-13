@@ -13,8 +13,8 @@ class ShopItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(5),
+      decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
@@ -28,8 +28,8 @@ class ShopItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.store_mall_directory_rounded),
-              SizedBox(
+              const Icon(Icons.store_mall_directory_rounded),
+              const SizedBox(
                 width: 5,
               ),
               Text(shopName),
@@ -45,7 +45,9 @@ class ShopItem extends StatelessWidget {
                             CartItem(
                               cartItem: items[index],
                             ),
-                            Divider(),
+                            const Divider(
+                              height: 1,
+                            ),
                           ],
                         ),
                       ))
