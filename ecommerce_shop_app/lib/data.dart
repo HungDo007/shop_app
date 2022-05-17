@@ -24,30 +24,6 @@ class Data {
       ]
     },
     {
-      "id": 33,
-      "seller": "hungdo",
-      "name": "Black & White Long Sleeve",
-      "description": "Something pro",
-      "category": 1,
-      "viewCount": 28,
-      "rate": 0,
-      "status": 0,
-      "price": 54.0,
-      "dateCreated": "2021-12-08T09:04:31.3548383",
-      "poster": "/Product/36ea3974-a29f-43b8-b33f-5bd554c82b6a.png",
-      "images": [
-        "/Product/dd04574f-6451-47aa-894c-f1af6a73d4ad.jpeg",
-        "/Product/947a0b14-233f-459f-9d91-a3e3d94d2d8f.jfif",
-        "/Product/62db2269-6642-4e03-bfcd-80debc7a64cb.jfif",
-        "/Product/daa0d896-0407-4576-9d4a-2d6827580d38.jfif"
-      ],
-      "productDetails": [
-        {"id": 85, "stock": 69, "price": 54.0, "componentDetails": []},
-        {"id": 86, "stock": 65, "price": 57.0, "componentDetails": []},
-        {"id": 87, "stock": 46, "price": 59.0, "componentDetails": []}
-      ]
-    },
-    {
       "id": 34,
       "seller": "tominh",
       "name": "Iphone 13",
@@ -137,30 +113,6 @@ class Data {
         {"id": 93, "stock": 15, "price": 40.0, "componentDetails": []},
         {"id": 94, "stock": 14, "price": 45.0, "componentDetails": []},
         {"id": 95, "stock": 21, "price": 48.0, "componentDetails": []}
-      ]
-    },
-    {
-      "id": 38,
-      "seller": "hungdo",
-      "name": "Floral T-shirt",
-      "description": "Something",
-      "category": 1,
-      "viewCount": 19,
-      "rate": 0,
-      "status": 0,
-      "price": 28,
-      "dateCreated": "2021-12-16T09:32:16.5791954",
-      "poster": "/Product/0b1c8226-12b4-4b07-b85b-4404654574bc.png",
-      "images": [
-        "/Product/4d901f00-725b-4135-a315-ac945d6aae1b.jpg",
-        "/Product/8ebef80d-246c-4244-b99c-7c9b58cd4795.jpg",
-        "/Product/2da81812-91cc-4e54-ad9e-46e3dd51dbb7.jpg",
-        "/Product/01057c31-d66f-4f8a-856c-395df1850ba1.jpg"
-      ],
-      "productDetails": [
-        {"id": 96, "stock": 17, "price": 28.0, "componentDetails": []},
-        {"id": 97, "stock": 26, "price": 24.0, "componentDetails": []},
-        {"id": 98, "stock": 18, "price": 26.0, "componentDetails": []}
       ]
     },
     {

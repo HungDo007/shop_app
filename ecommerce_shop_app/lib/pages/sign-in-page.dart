@@ -38,7 +38,7 @@ class _SignInPageState extends State<SignInPage> {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text("Error"),
+          title: const Text("Error"),
           content: Text(errorMessage),
           actions: [
             TextButton(
@@ -51,7 +51,21 @@ class _SignInPageState extends State<SignInPage> {
         ),
       );
     } catch (error) {
-      print(error);
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text("Error"),
+          content: const Text("Something went wrong! Please try again"),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
       rethrow;
     }
   }
@@ -115,19 +129,11 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 Container(
                   height: 50,
-                  margin: EdgeInsets.symmetric(vertical: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     child: const Text('Sign In'),
                     onPressed: _submit,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    //forgot password screen
-                  },
-                  child: const Text(
-                    'Forgot Password',
                   ),
                 ),
                 TextButton(

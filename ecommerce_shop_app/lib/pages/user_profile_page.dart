@@ -1,6 +1,7 @@
-import 'package:ecommerce_shop_app/api/api_url.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '../api/api_url.dart';
 import '../providers/user.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
@@ -28,7 +29,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
     if (picked != null) {
       setState(() {
-        _dateOfBirthController.text = picked.toString();
+        _dateOfBirthController.text = DateFormat("dd/MM/yyyy").format(picked);
       });
     }
   }
@@ -38,7 +39,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("User Profile"),
+          title: const Text("User Profile"),
         ),
         body: FutureBuilder(
           future: UserMethod().getUser(),
@@ -54,7 +55,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 );
               } else {
                 final user = userSnapshot.data as User;
-                _dateOfBirthController.text = user.birthDay.toString();
+                _dateOfBirthController.text = DateFormat("dd/MM/yyyy").format(user.birthDay);
                 return SingleChildScrollView(
                   child: Column(
                     children: [

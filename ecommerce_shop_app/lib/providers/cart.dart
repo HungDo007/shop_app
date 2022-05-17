@@ -6,6 +6,14 @@ import '../api/http_client.dart';
 
 import '../api/api_url.dart';
 
+class ShipInfo {
+  String name = "";
+  String phoneNumber = "";
+  final String address = "";
+
+  // ShipInfo(this.name, this.phoneNumber, this.address);
+}
+
 class Cart {
   final String shopName;
   final String seller;
@@ -86,8 +94,27 @@ class Carts with ChangeNotifier {
       if (!shopItems.any((item) => item["shopName"] == element.shopName)) {
         var obj = {
           "shopName": element.shopName,
-          "items":
-              cartItems.where((cart) => cart.shopName == element.shopName).toList(),
+          "seller": element.seller,
+          "items": cartItems
+              .where((cart) => cart.shopName == element.shopName)
+              .toList(),
+        };
+        shopItems.add(obj);
+      }
+    }
+    return shopItems;
+  }
+
+  List get selectedShopItems {
+    final shopItems = [];
+    for (var element in selectedCartItems) {
+      if (!shopItems.any((item) => item["shopName"] == element.shopName)) {
+        var obj = {
+          "shopName": element.shopName,
+          "seller": element.seller,
+          "items": selectedCartItems
+              .where((cart) => cart.shopName == element.shopName)
+              .toList(),
         };
         shopItems.add(obj);
       }

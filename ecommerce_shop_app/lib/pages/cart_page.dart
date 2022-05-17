@@ -35,31 +35,29 @@ class CartPage extends StatelessWidget {
                   child: Text("An error occurred!"),
                 );
               } else {
-                // final carts = cartSnapshot.data as List<Cart>;
-                // final shopItems = [];
-                // for (var element in carts) {
-                //   if (!shopItems
-                //       .any((item) => item["shopName"] == element.shopName)) {
-                //     var obj = {
-                //       "shopName": element.shopName,
-                //       "items": carts
-                //           .where((cart) => cart.shopName == element.shopName)
-                //           .toList(),
-                //     };
-                //     shopItems.add(obj);
-                //   }
-                // }
                 final shopItems = Provider.of<Carts>(context).shopItems;
-                return ListView.builder(
-                  itemCount: shopItems.length,
-                  itemBuilder: (ctx, index) {
-                    var shopItem = shopItems[index]["items"] as List<Cart>;
-                    return ShopItem(
-                      shopName: shopItems[index]["shopName"],
-                      items: shopItem,
-                    );
-                  },
-                );
+                if (shopItems.isEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/empty_cart.png",
+                      ),
+                    ],
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: shopItems.length,
+                    itemBuilder: (ctx, index) {
+                      var shopItem = shopItems[index]["items"] as List<Cart>;
+                      return ShopItem(
+                        shopName: shopItems[index]["shopName"],
+                        items: shopItem,
+                      );
+                    },
+                  );
+                }
               }
             }
           },
@@ -110,8 +108,8 @@ class CheckOutCard extends StatelessWidget {
             const Spacer(),
             Consumer<Carts>(
               builder: (context, cart, child) => Checkbox(
-                  value: cart.cartItems
-                      .every((cartItem) => cartItem.selected == true),
+                  value: cart.cartItems.every((cartItem) =>
+                      cartItem.selected == true || cart.cartItems.isEmpty),
                   onChanged: (value) {
                     cart.setSelected(-1, value!);
                   }),

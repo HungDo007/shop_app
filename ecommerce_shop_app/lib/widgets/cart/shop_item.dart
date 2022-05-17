@@ -45,9 +45,7 @@ class ShopItem extends StatelessWidget {
                             CartItem(
                               cartItem: items[index],
                             ),
-                            const Divider(
-                              height: 1,
-                            ),
+                            const Divider(),
                           ],
                         ),
                       ))

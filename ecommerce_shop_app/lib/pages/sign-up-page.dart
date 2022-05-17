@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 import '../utils/http_exception.dart';
+import '../utils/input_validation.dart';
 import './sign-in-page.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -200,23 +201,5 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
         ),
       ),
     );
-  }
-}
-
-mixin InputValidationMixin {
-  bool isUsernameValid(String username) {
-    final usernameRegex = RegExp(r'^[a-zA-Z0-9]+$');
-    return usernameRegex.hasMatch(username);
-  }
-
-  bool isEmailValid(String email) {
-    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    return emailRegex.hasMatch(email);
-  }
-
-  bool isPasswordValid(String password) {
-    final passwordRegex = RegExp(
-        r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[0-9a-zA-Z!@#$%^&*]{8,}$');
-    return passwordRegex.hasMatch(password);
   }
 }

@@ -20,15 +20,15 @@ class CategoryItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(5),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, CategoryPage.routeName,
-            arguments: id),
+        onTap: () =>
+            Navigator.pushNamed(context, CategoryPage.routeName, arguments: id),
         splashColor: Colors.grey.withOpacity(0.7),
         child: Stack(
           alignment: AlignmentDirectional.center,
           children: [
             SizedBox(
-              width: 200,
-              height: 150,
+              width: 170,
+              height: 120,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(

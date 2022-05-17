@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../api/api_url.dart';
 import '../../providers/cart.dart';
+import '../../pages/cart_page.dart';
 
 class CartItem extends StatelessWidget {
   final Cart cartItem;
@@ -37,13 +38,14 @@ class CartItem extends StatelessWidget {
       },
       child: Row(
         children: [
-          Consumer<Carts>(
-            builder: (context, cart, child) => Checkbox(
-                value: cartItem.selected,
-                onChanged: (value) {
-                  cart.setSelected(cartItem.cartId, value!);
-                }),
-          ),
+          if (ModalRoute.of(context)?.settings.name == CartPage.routeName)
+            Consumer<Carts>(
+              builder: (context, cart, child) => Checkbox(
+                  value: cartItem.selected,
+                  onChanged: (value) {
+                    cart.setSelected(cartItem.cartId, value!);
+                  }),
+            ),
           Flexible(
             child: SizedBox(
               width: 88,

@@ -9,7 +9,7 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // elevation: 5,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
