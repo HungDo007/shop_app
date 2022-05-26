@@ -28,7 +28,7 @@ class ShopItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.store_mall_directory_rounded),
+              const Icon(Icons.store_mall_directory_rounded, color: Colors.redAccent,),
               const SizedBox(
                 width: 5,
               ),

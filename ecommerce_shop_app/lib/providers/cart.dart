@@ -6,13 +6,13 @@ import '../api/http_client.dart';
 
 import '../api/api_url.dart';
 
-class ShipInfo {
-  String name = "";
-  String phoneNumber = "";
-  final String address = "";
+// class ShipInfo {
+//   String name = "";
+//   String phoneNumber = "";
+//   final String address = "";
 
-  // ShipInfo(this.name, this.phoneNumber, this.address);
-}
+//   // ShipInfo(this.name, this.phoneNumber, this.address);
+// }
 
 class Cart {
   final String shopName;

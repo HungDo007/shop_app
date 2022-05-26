@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
-
 import '../providers/cart.dart';
+
 import '../utils/http_exception.dart';
 
 class SignInPage extends StatefulWidget {
@@ -20,6 +20,13 @@ class _SignInPageState extends State<SignInPage> {
     'email': '',
     'password': '',
   };
+  bool _hidePassword = true;
+
+  void _handleHidePassword() {
+    setState(() {
+      _hidePassword = !_hidePassword;
+    });
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
@@ -111,10 +118,15 @@ class _SignInPageState extends State<SignInPage> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    obscureText: _hidePassword,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: 'Password',
+                      suffixIcon: IconButton(
+                          onPressed: _handleHidePassword,
+                          icon: Icon(_hidePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {

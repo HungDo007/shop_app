@@ -5,14 +5,12 @@ class CustomTextField extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.icon,
-      this.value = "",
       this.controller,
       this.validate, this.inputType})
       : super(key: key);
 
   final String title;
   final IconData icon;
-  final String value;
   final TextEditingController? controller;
   final validate;
   final TextInputType? inputType;
@@ -29,7 +27,6 @@ class CustomTextField extends StatelessWidget {
           labelText: title,
           prefixIcon: Icon(icon),
         ),
-        // initialValue: value,
         controller: controller,
         validator: validate,
         keyboardType: inputType,

@@ -62,7 +62,7 @@ class CartPage extends StatelessWidget {
             }
           },
         ),
-        bottomNavigationBar: CheckOutCard(),
+        bottomNavigationBar: const CheckOutCard(),
       ),
     );
   }
@@ -87,9 +87,9 @@ class CheckOutCard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, -15),
+            offset: const Offset(0, -15),
             blurRadius: 20,
-            color: Color(0xFFDADADA).withOpacity(0.15),
+            color: const Color(0xFFDADADA).withOpacity(0.15),
           )
         ],
       ),
@@ -108,8 +108,10 @@ class CheckOutCard extends StatelessWidget {
             const Spacer(),
             Consumer<Carts>(
               builder: (context, cart, child) => Checkbox(
-                  value: cart.cartItems.every((cartItem) =>
-                      cartItem.selected == true || cart.cartItems.isEmpty),
+                  value: cart.cartItems.isNotEmpty
+                      ? cart.cartItems
+                          .every((cartItem) => cartItem.selected == true)
+                      : false,
                   onChanged: (value) {
                     cart.setSelected(-1, value!);
                   }),

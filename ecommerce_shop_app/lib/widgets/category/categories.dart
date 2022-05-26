@@ -52,7 +52,7 @@ class Categories extends StatelessWidget {
                 );
               } else {
                 return SizedBox(
-                  height: 150,
+                  height: 120,
                   child: Consumer<category_provider.Categories>(
                     builder: (ctx, categoryData, child) => ListView.builder(
                       scrollDirection: Axis.horizontal,

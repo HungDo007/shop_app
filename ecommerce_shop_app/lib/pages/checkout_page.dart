@@ -1,14 +1,13 @@
-// import '../widgets/cart/cart_item.dart';
-import 'dart:developer';
-
-import 'package:ecommerce_shop_app/providers/order.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../pages/user_order_page.dart';
 import '../providers/cart.dart';
 import '../providers/user.dart';
+import '../providers/order.dart';
 
 import '../utils/input_validation.dart';
+import '../widgets/ship_info.dart';
 import '../widgets/payment.dart';
 // import '../widgets/checkout_item.dart';
 import '../widgets/cart/shop_item.dart';
@@ -98,33 +97,10 @@ class _CheckoutPageState extends State<CheckoutPage> with InputValidationMixin {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(Icons.location_on,
-                                      color: Colors.redAccent),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: RichText(
-                                      text: TextSpan(
-                                          text: "Ship Information\n",
-                                          children: [
-                                            TextSpan(
-                                                text:
-                                                    "\nName: ${nameController.text}\n"),
-                                            TextSpan(
-                                                text:
-                                                    "Phone Number: ${phoneController.text}\n"),
-                                            TextSpan(
-                                                text:
-                                                    "Address: ${addressController.text}"),
-                                          ]),
-                                      // overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              ShipInfo(
+                                  name: nameController.text,
+                                  phoneNumber: phoneController.text,
+                                  address: addressController.text),
                               const Spacer(),
                               IconButton(
                                 onPressed: () {
@@ -200,7 +176,7 @@ class _CheckoutPageState extends State<CheckoutPage> with InputValidationMixin {
                                     ),
                                   );
                                 },
-                                icon: Icon(Icons.arrow_forward_ios,
+                                icon: const Icon(Icons.arrow_forward_ios,
                                     color: Colors.grey),
                               )
                             ],
@@ -325,7 +301,29 @@ class OrderCard extends StatelessWidget {
                           selectedItems.map((e) => e.cartId).toList(),
                     };
                   }).toList();
-                  await Order().order(data);
+                  try {
+                    await Orders().order(data);
+                    Provider.of<Carts>(context, listen: false).getCart();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.check_circle,
+                                color: Theme.of(context).primaryColor),
+                            const Text('Order successfully!'),
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        backgroundColor: Colors.grey,
+                      ),
+                    );
+                    Navigator.pushNamed(context, "/");
+                  } catch (e) {
+                    rethrow;
+                  }
                 },
               ),
             )

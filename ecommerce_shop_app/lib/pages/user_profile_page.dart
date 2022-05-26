@@ -1,23 +1,34 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../api/api_url.dart';
 import '../providers/user.dart';
+import '../utils/input_validation.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
 
-  static const routeName = "/user-profile";
-
   @override
   State<UserProfilePage> createState() => _UserProfilePageState();
 }
 
-class _UserProfilePageState extends State<UserProfilePage> {
-  DateTime? _selectedDate;
+class _UserProfilePageState extends State<UserProfilePage>
+    with InputValidationMixin {
+  final _formKey = GlobalKey<FormState>();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _dateOfBirthController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _addressController = TextEditingController();
+  String _avatar = "";
+  File? _imageFile;
+  late Future<User> _userFuture;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -29,20 +40,38 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
     if (picked != null) {
       setState(() {
-        _dateOfBirthController.text = DateFormat("dd/MM/yyyy").format(picked);
+        _dateOfBirthController.text = DateFormat("MM/dd/yyyy").format(picked);
       });
     }
+  }
+
+  Future<User> getUser() async {
+    final user = await UserMethod().getUser();
+    setState(() {
+      _firstNameController.text = user.firstName;
+      _lastNameController.text = user.lastName;
+      _dateOfBirthController.text =
+          DateFormat("MM/dd/yyyy").format(DateTime.parse(user.birthDay));
+      _emailController.text = user.email;
+      _phoneNumberController.text = user.phoneNumber;
+      _addressController.text = user.address;
+      _avatar = user.avatar;
+    });
+    return user;
+  }
+
+  @override
+  void initState() {
+    _userFuture = getUser();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("User Profile"),
-        ),
         body: FutureBuilder(
-          future: UserMethod().getUser(),
+          future: _userFuture,
           builder: (ctx, userSnapshot) {
             if (userSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -54,8 +83,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   child: Text("An error occurred!"),
                 );
               } else {
-                final user = userSnapshot.data as User;
-                _dateOfBirthController.text = DateFormat("dd/MM/yyyy").format(user.birthDay);
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -69,9 +96,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             clipBehavior: Clip.none,
                             children: [
                               CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  ApiUrls.baseUrl + user.avatar,
-                                ),
+                                backgroundImage: _imageFile != null
+                                    ? FileImage(_imageFile!)
+                                    : NetworkImage(
+                                        ApiUrls.baseUrl + _avatar,
+                                      ) as ImageProvider,
                                 backgroundColor: const Color(0xFFDADADA),
                               ),
                               Positioned(
@@ -81,7 +110,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                   height: 46,
                                   width: 46,
                                   child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      final ImagePicker _picker = ImagePicker();
+                                      final XFile? image =
+                                          await _picker.pickImage(
+                                              source: ImageSource.gallery);
+                                      setState(() {
+                                        _imageFile = File(image!.path);
+                                      });
+                                    },
                                     child: const Icon(Icons.camera_alt),
                                     style: ButtonStyle(
                                       shape: MaterialStateProperty.all(
@@ -105,6 +142,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         ),
                       ),
                       Form(
+                        key: _formKey,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
@@ -112,12 +150,24 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               CustomTextField(
                                 title: "First Name",
                                 icon: Icons.account_circle,
-                                value: user.firstName,
+                                controller: _firstNameController,
+                                validate: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
                               ),
                               CustomTextField(
                                 title: "Last Name",
                                 icon: Icons.account_circle,
-                                value: user.lastName,
+                                controller: _lastNameController,
+                                validate: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
                               ),
                               TextFormField(
                                 decoration: InputDecoration(
@@ -134,24 +184,70 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               CustomTextField(
                                 title: "Email",
                                 icon: Icons.email,
-                                value: user.email,
+                                controller: _emailController,
+                                validate: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'This field is required';
+                                  } else if (!isEmailValid(value)) {
+                                    return 'Email is not valid';
+                                  }
+                                  return null;
+                                },
                               ),
                               CustomTextField(
                                 title: "Phone Number",
                                 icon: Icons.phone,
-                                value: user.phoneNumber,
+                                controller: _phoneNumberController,
+                                validate: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'This field is required';
+                                  } else if (!isPhoneValid(value)) {
+                                    return 'Phone number is not valid';
+                                  }
+                                  return null;
+                                },
                               ),
                               CustomTextField(
                                 title: "Address",
                                 icon: Icons.location_on,
-                                value: user.address,
+                                controller: _addressController,
+                                validate: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
                               ),
                               const SizedBox(
                                 height: 15,
                               ),
                               CustomButton(
                                 text: "Save Changes",
-                                press: () {},
+                                press: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    var user = userSnapshot.data as User;
+                                    try {
+                                      await UserMethod().editProfile(
+                                          User(
+                                            id: "",
+                                            username: user.username,
+                                            firstName:
+                                                _firstNameController.text,
+                                            lastName: _lastNameController.text,
+                                            birthDay:
+                                                _dateOfBirthController.text,
+                                            email: _emailController.text,
+                                            phoneNumber:
+                                                _phoneNumberController.text,
+                                            address: _addressController.text,
+                                            avatar: "",
+                                          ),
+                                          _imageFile?.path ?? "");
+                                    } catch (e) {
+                                      print(e);
+                                    }
+                                  }
+                                },
                               ),
                               const SizedBox(
                                 height: 10,

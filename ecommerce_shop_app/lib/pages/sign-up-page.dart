@@ -23,6 +23,13 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
     'email': '',
     'password': '',
   };
+  bool _hidePassword = true;
+
+  void _handleHidePassword() {
+    setState(() {
+      _hidePassword = !_hidePassword;
+    });
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
@@ -55,7 +62,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text("Error"),
+          title: const Text("Error"),
           content: Text(errorMessage),
           actions: [
             TextButton(
@@ -136,10 +143,15 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextFormField(
                     controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    obscureText: _hidePassword,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: 'Password',
+                      suffixIcon: IconButton(
+                          onPressed: _handleHidePassword,
+                          icon: Icon(_hidePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -157,10 +169,15 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    obscureText: _hidePassword,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: 'Confirm Password',
+                      suffixIcon: IconButton(
+                          onPressed: _handleHidePassword,
+                          icon: Icon(_hidePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {

@@ -1,8 +1,9 @@
-import 'dart:developer';
-import 'package:ecommerce_shop_app/providers/cart.dart';
+import 'package:ecommerce_shop_app/widgets/product/image_view.dart';
+import 'package:ecommerce_shop_app/widgets/product/product_base_info.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/cart.dart';
 import '../providers/auth.dart';
 import '../providers/products.dart' as product_provider;
 
@@ -67,11 +68,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       try {
         await Provider.of<Carts>(context, listen: false).addToCart(
             cartItem["productDetailId"] ?? 0, cartItem["amount"] ?? 1);
-        // await Carts().addToCart(
-        //     cartItem["productDetailId"] ?? 0, cartItem["amount"] ?? 1);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Add product to cart successfully!'),
+          SnackBar(
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
+                const Text('Add product to cart successfully!'),
+              ],
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            backgroundColor: Colors.grey,
           ),
         );
       } catch (e) {
@@ -80,11 +89,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     } else {
       Navigator.pushNamed(context, SignInPage.routeName);
     }
-    // print(user.username);
   }
 
   void _handlePriceAndStock() {
-    // inspect(productDetails);
     if (selected.length == productDetails[0].componentDetails.length) {
       var a = productDetails.map((item) {
         var obj = [];
@@ -157,7 +164,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           if (dataSnapshot.error != null) {
             return const Scaffold(
               body: Center(
-                child: Text("An error occurred"),
+                child: Text("Sorry something went wrong!"),
               ),
             );
           } else {
@@ -189,78 +196,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 body: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 300,
-                        child: PageView.builder(
-                          itemCount: product.images.length,
-                          // pageSnapping: true,
-                          itemBuilder: (context, pagePosition) {
-                            return Container(
-                              child: Image.network(
-                                ApiUrls.baseUrl + product.images[pagePosition],
-                                fit: BoxFit.contain,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                      ImageView(
+                          imageLength: product.images.length,
+                          imageUrl: product.images),
                       TopRoundedContainer(
                         color: Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                product.name,
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 20,
-                                right: 64,
-                              ),
-                              child: Text(
-                                "\$$price",
-                                style: const TextStyle(
-                                    color: Colors.redAccent, fontSize: 24),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 20,
-                                right: 64,
-                              ),
-                              child: Text(
-                                product.description,
-                                maxLines: 3,
-                              ),
-                            ),
+                            ProductBaseInfo(
+                                name: product.name,
+                                price: price,
+                                description: product.description),
                             TopRoundedContainer(
                               color: const Color(0xFFF6F7F9),
                               child: Column(

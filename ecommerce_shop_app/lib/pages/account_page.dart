@@ -7,7 +7,7 @@ import '../widgets/menu_item.dart';
 import './sign-in-page.dart';
 import './sign-up-page.dart';
 import './user_order_page.dart';
-import './user_profile_page.dart';
+import './user_tab_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -73,31 +73,33 @@ class AccountPage extends StatelessWidget {
               icon: (Icons.account_box_rounded),
               press: () {
                 Provider.of<Auth>(context, listen: false).isAuthenticate
-                        ? Navigator.pushNamed(context, UserProfilePage.routeName) :
-                Navigator.pushNamed(context, SignInPage.routeName);
+                    ? Navigator.pushNamed(context, UserPage.routeName)
+                    : Navigator.pushNamed(context, SignInPage.routeName);
               },
             ),
             MenuItem(
-              text: "Order",
-              icon: (Icons.receipt_long),
-              press: () =>
-                  Navigator.pushNamed(context, UserOrderPage.routeName),
-            ),
-            MenuItem(
-              text: "Notification",
-              icon: (Icons.notifications),
-              press: () {},
-            ),
-            MenuItem(
-              text: "Settings",
-              icon: (Icons.settings),
-              press: () {},
-            ),
-            MenuItem(
-              text: "Help Center",
-              icon: (Icons.help_center),
-              press: () {},
-            ),
+                text: "Order",
+                icon: (Icons.receipt_long),
+                press: () {
+                  Provider.of<Auth>(context, listen: false).isAuthenticate
+                      ? Navigator.pushNamed(context, UserOrderPage.routeName)
+                      : Navigator.pushNamed(context, SignInPage.routeName);
+                }),
+            // MenuItem(
+            //   text: "Notification",
+            //   icon: (Icons.notifications),
+            //   press: () {},
+            // ),
+            // MenuItem(
+            //   text: "Settings",
+            //   icon: (Icons.settings),
+            //   press: () {},
+            // ),
+            // MenuItem(
+            //   text: "Help Center",
+            //   icon: (Icons.help_center),
+            //   press: () {},
+            // ),
             if (user.username.isNotEmpty)
               MenuItem(
                 text: "Sign Out",

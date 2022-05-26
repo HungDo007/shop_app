@@ -7,9 +7,10 @@ import '../widgets/badge.dart';
 
 import './home_page.dart';
 import './cart_page.dart';
-import './store_page.dart';
+// import './store_page.dart';
 import './account_page.dart';
 import './sign-in-page.dart';
+import './product_query_page.dart';
 
 class TabPage extends StatefulWidget {
   const TabPage({Key? key}) : super(key: key);
@@ -20,6 +21,8 @@ class TabPage extends StatefulWidget {
 
 class _TabPageState extends State<TabPage> {
   int _selectedIndex = 0;
+  final _queryController = TextEditingController();
+  // String _query = "";
   static const List<Widget> _widgetOptions = [
     HomePage(),
     // StorePage(),
@@ -30,6 +33,15 @@ class _TabPageState extends State<TabPage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    _queryController.addListener(() {
+      setState(() {
+              });
+    });
+    super.initState();
   }
 
   @override
@@ -44,14 +56,25 @@ class _TabPageState extends State<TabPage> {
                 color: Colors.white, borderRadius: BorderRadius.circular(5)),
             child: Center(
               child: TextField(
+                textInputAction: TextInputAction.search,
+                controller: _queryController,
+                onSubmitted: (keyword) {
+                  if (keyword.length >=2){
+                    Navigator.pushNamed(context, ProductQueryPage.routeName, arguments: keyword);
+                  }
+                },
                 decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        /* Clear the search field */
-                      },
-                    ),
+                    suffixIcon: _queryController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              setState(() {
+                                _queryController.clear();
+                              });
+                            },
+                          )
+                        : null,
                     hintText: 'Search...',
                     border: InputBorder.none),
               ),

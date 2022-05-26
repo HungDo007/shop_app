@@ -42,7 +42,7 @@ namespace Application.Catalog
                 if (cart != null)
                 {
                     cart.Quantity += request.Quantity;
-                    cart.Price += request.Quantity * proDetail.Price;
+                    //cart.Price += request.Quantity * proDetail.Price;
                     await _context.SaveChangesAsync();
                     return true;
                 }
@@ -53,7 +53,7 @@ namespace Application.Catalog
                         UserId = user.Id,
                         ProductDetailId = request.ProductDetailId,
                         Quantity = request.Quantity,
-                        Price = request.Quantity * proDetail.Price
+                        Price = proDetail.Price
                     };
                 }
                 _context.Carts.Add(cart);
