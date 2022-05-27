@@ -4,7 +4,7 @@ ThemeData theme() {
   return ThemeData(
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: appBarTheme(),
-    // textTheme: textTheme(),
+    textTheme: textTheme(),
     // inputDecorationTheme: inputDecorationTheme(),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     primarySwatch: Colors.orange,
@@ -19,7 +19,7 @@ ThemeData theme() {
 }
 
 AppBarTheme appBarTheme() {
-  return AppBarTheme(
+  return const AppBarTheme(
     backgroundColor: Colors.orange,
     foregroundColor: Colors.white,
     elevation: 0,
@@ -33,10 +33,14 @@ AppBarTheme appBarTheme() {
   );
 }
 
-// TextTheme textTheme() {
-//   return TextTheme(
-//     bodyText1: TextStyle(color: Colors.white),
-//     bodyText2: TextStyle(color: Colors.red),
-//     headline5: TextStyle(color: Colors.red),
-//   );
-// }
+TextTheme textTheme() {
+  return const TextTheme(
+    bodyText1: TextStyle(
+      fontSize: 16,
+    ),
+    bodyText2: TextStyle(
+      fontSize: 18,
+    ),
+    // headline5: TextStyle(color: Colors.red),
+  );
+}

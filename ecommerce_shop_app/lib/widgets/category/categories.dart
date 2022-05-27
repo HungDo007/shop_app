@@ -5,6 +5,8 @@ import '../../providers/categories.dart' as category_provider;
 import './category_item.dart';
 
 class Categories extends StatelessWidget {
+  const Categories({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,9 +60,9 @@ class Categories extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: categoryData.categoryItems.length,
                       itemBuilder: (context, index) => CategoryItem(
-                        categoryData.categoryItems[index].id,
-                        categoryData.categoryItems[index].name,
-                        categoryData.categoryItems[index].image,
+                        id: categoryData.categoryItems[index].id,
+                        name: categoryData.categoryItems[index].name,
+                        imageUrl: categoryData.categoryItems[index].image,
                       ),
                     ),
                   ),

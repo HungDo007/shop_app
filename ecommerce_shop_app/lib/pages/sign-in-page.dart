@@ -7,7 +7,7 @@ import '../providers/cart.dart';
 import '../utils/http_exception.dart';
 
 class SignInPage extends StatefulWidget {
-  // const SignInPage({Key? key}) : super(key: key);
+  const SignInPage({Key? key}) : super(key: key);
   static const routeName = "/sign-in";
 
   @override

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import '../../api/api_url.dart';
 
 class ProductItem extends StatelessWidget {
-  // const ProductItem({ Key? key }) : super(key: key);
 
   final int id;
   final String name;
   final String imageUrl;
   final num price;
 
-  ProductItem(this.id, this.name, this.imageUrl, this.price);
+  const ProductItem(this.id, this.name, this.imageUrl, this.price, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

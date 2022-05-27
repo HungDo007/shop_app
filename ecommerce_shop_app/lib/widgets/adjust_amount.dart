@@ -5,8 +5,8 @@ import './rounded_icon.dart';
 class AdjustAmount extends StatefulWidget {
   // const AdjustAmount({Key? key}) : super(key: key);
   final int stock;
-  int amount;
-  AdjustAmount(this.stock, this.amount);
+  final int amount;
+  const AdjustAmount(this.stock, this.amount, {Key? key}) : super(key: key);
   @override
   State<AdjustAmount> createState() => _AdjustAmountState();
 }
@@ -14,21 +14,6 @@ class AdjustAmount extends StatefulWidget {
 class _AdjustAmountState extends State<AdjustAmount> {
   // int _amount = 1;
 
-  void _decreaseAmount() {
-    if (widget.amount > 1) {
-      setState(() {
-        widget.amount -= 1;
-      });
-    }
-  }
-
-  void _increaseAmount() {
-    if (widget.amount < widget.stock) {
-      setState(() {
-        widget.amount += 1;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +24,12 @@ class _AdjustAmountState extends State<AdjustAmount> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(children: [
-            RoundedIconButton(icon: Icons.remove, press: _decreaseAmount),
+            RoundedIconButton(icon: Icons.remove, press: (){}),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(widget.amount.toString()),
             ),
-            RoundedIconButton(icon: Icons.add, press: _increaseAmount),
+            RoundedIconButton(icon: Icons.add, press: (){}),
           ]),
         ),
         const Spacer(),

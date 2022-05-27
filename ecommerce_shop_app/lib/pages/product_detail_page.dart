@@ -1,5 +1,3 @@
-import 'package:ecommerce_shop_app/widgets/product/image_view.dart';
-import 'package:ecommerce_shop_app/widgets/product/product_base_info.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,17 +8,18 @@ import '../providers/products.dart' as product_provider;
 // import '../widgets/component_detail.dart';
 // import '../widgets/adjust_amount.dart';
 import './sign-in-page.dart';
+import '../widgets/product/image_view.dart';
+import '../widgets/product/product_base_info.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/rounded_icon.dart';
-import '../api/api_url.dart';
 import '../utils/handle.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  // const ProductDetailPage({Key? key}) : super(key: key);
+  const ProductDetailPage({Key? key, required this.productId}) : super(key: key);
   static const routeName = "/product-detail";
 
   final int productId;
-  ProductDetailPage(this.productId);
+  // ProductDetailPage(this.productId);
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -71,10 +70,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
-                const Text('Add product to cart successfully!'),
+              children: const [
+                Icon(Icons.check_circle, color: Colors.green),
+                SizedBox(
+                  width: 10,
+                ),
+                Text('Add product to cart successfully!'),
               ],
             ),
             shape: RoundedRectangleBorder(

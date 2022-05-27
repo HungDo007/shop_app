@@ -8,7 +8,7 @@ class Products extends StatelessWidget {
   final int categoryId;
   final String keyword;
 
-  Products(this.categoryId, this.keyword);
+  const Products(this.categoryId, this.keyword, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,6 @@ class Products extends StatelessWidget {
             ),
           );
         } else if (dataSnapshot.hasError) {
-          print(dataSnapshot.error);
           return const SliverToBoxAdapter(
             child: Center(
               child: Text("An error occurred! Failed to load products"),
@@ -34,6 +33,18 @@ class Products extends StatelessWidget {
           );
         } else {
           final products = dataSnapshot.data as List<product_provider.Product>;
+          if (products.isEmpty) {
+            return const Center(
+              child: Text(
+                "There are no items here",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+            );
+          }
           return SliverGrid(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200,

@@ -79,7 +79,7 @@ namespace Application.System
 
                 await _context.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return;
             }
@@ -352,7 +352,10 @@ namespace Application.System
             user.Dob = request.Dob;
             try
             {
-                user.Avatar = await _storageService.SaveFile(SystemConstants.FolderAvatar, request.Avatar);
+                if (request.Avatar != null)
+                {
+                    user.Avatar = await _storageService.SaveFile(SystemConstants.FolderAvatar, request.Avatar);
+                }
             }
             catch { }
 

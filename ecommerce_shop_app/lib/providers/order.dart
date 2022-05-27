@@ -19,7 +19,8 @@ class OrderArguments {
   final String address;
   final int orderStatus;
 
-  OrderArguments(this.orderId, this.name, this.phoneNumber, this.address, this.orderStatus);
+  OrderArguments(this.orderId, this.name, this.phoneNumber, this.address,
+      this.orderStatus);
 }
 
 class Order {
@@ -122,7 +123,7 @@ class Orders {
     }
   }
 
-  Future<String> orderPayPal(data) async{
+  Future<String> orderPayPal(data) async {
     final url = Uri.parse('${ApiUrls.baseUrl}/api/Sales/PaymentOrder');
     try {
       final response = await HttpClient().post(url, body: json.encode(data));
@@ -183,6 +184,15 @@ class Orders {
     final url = Uri.parse('${ApiUrls.baseUrl}/api/Sales/Order/$orderId');
     try {
       await HttpClient().delete(url);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> checkoutStatus(data) async {
+    final url = Uri.parse('${ApiUrls.baseUrl}/api/Sales/CheckoutStatus');
+    try {
+      await HttpClient().post(url, body: json.encode(data));
     } catch (e) {
       rethrow;
     }

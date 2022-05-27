@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:ecommerce_shop_app/data.dart';
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
 import '../api/api_url.dart';
@@ -103,21 +102,21 @@ class Products with ChangeNotifier {
         '${ApiUrls.baseUrl}/api/Catalogs/product?CatId=$categoryId&Keyword=$keyword&PageSize=100');
 
     try {
-      // final response = await http.get(url);
-      // final productPaging = json.decode(response.body);
-      // final items = productPaging["items"] as List;
+      final response = await http.get(url);
+      final productPaging = json.decode(response.body);
+      final items = productPaging["items"] as List;
 
-      // final productList = items.map((product) {
-      //   return Product.fromJson(product);
-      // }).toList();
-      // return productList;
-
-      //data from file
-      var pro = Data.products;
-      final product = pro.map((product) {
+      final productList = items.map((product) {
         return Product.fromJson(product);
       }).toList();
-      return product;
+      return productList;
+
+      //data from file
+      // var pro = Data.products;
+      // final product = pro.map((product) {
+      //   return Product.fromJson(product);
+      // }).toList();
+      // return product;
     } catch (error) {
       rethrow;
     }

@@ -7,7 +7,7 @@ import '../utils/input_validation.dart';
 import './sign-in-page.dart';
 
 class SignUpPage extends StatefulWidget {
-  // const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({Key? key}) : super(key: key);
 
   static const routeName = "/sign-up";
 
@@ -43,8 +43,21 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
         _signUpData["password"] ?? "",
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Sign up successfully!'),
+        SnackBar(
+          content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
+                const SizedBox(
+                  width: 10,
+                ),
+                const Text('Sign Up successfully!'),
+              ],
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            backgroundColor: Colors.grey,
+            duration: const Duration(milliseconds: 1500),
         ),
       );
       Navigator.pushNamed(context, "/sign-in");
@@ -75,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
         ),
       );
     } catch (error) {
-      print(error.toString());
+      rethrow;
     }
   }
 

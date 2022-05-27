@@ -243,8 +243,32 @@ class _UserProfilePageState extends State<UserProfilePage>
                                             avatar: "",
                                           ),
                                           _imageFile?.path ?? "");
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            children: [
+                                              Icon(Icons.check_circle,
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              const Text(
+                                                  'Update profile successfully!'),
+                                            ],
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                          ),
+                                          backgroundColor: Colors.grey,
+                                          duration: const Duration(
+                                              milliseconds: 1500),
+                                        ),
+                                      );
                                     } catch (e) {
-                                      print(e);
+                                      rethrow;
                                     }
                                   }
                                 },

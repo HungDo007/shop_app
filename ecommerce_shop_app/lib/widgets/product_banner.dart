@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProductBanner extends StatelessWidget {
-  // const ProductBanner({ Key? key }) : super(key: key);
+  ProductBanner({Key? key}) : super(key: key);
 
-  List<String> images = [
+  final List<String> images = [
     "assets/images/banner1.jpg",
     "assets/images/banner2.jpg",
     "assets/images/banner3.jpg",

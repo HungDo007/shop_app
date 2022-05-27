@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:ecommerce_shop_app/api/http_client.dart';
 import 'package:flutter/foundation.dart';
-import "package:http/http.dart" as http;
 
+import '../api/http_client.dart';
 import '../api/api_url.dart';
 
 class Category {

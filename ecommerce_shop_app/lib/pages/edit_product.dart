@@ -15,7 +15,7 @@ class _EditProductState extends State<EditProduct> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Product"),
+          title: const Text("Product"),
         ),
         body: Column(
           children: [
@@ -23,18 +23,23 @@ class _EditProductState extends State<EditProduct> {
               height: 200,
               width: double.infinity,
               color: Colors.red,
-              child: Text("Add images"),
+              child: StreamBuilder<Object>(
+                stream: null,
+                builder: (context, snapshot) {
+                  return const Text("Add images");
+                }
+              ),
             ),
             Form(
               child: Column(
                 children: [
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("Name"),
                     ),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("Description"),
                     ),
                   ),

@@ -17,7 +17,7 @@ class _StoreProfileState extends State<StoreProfile> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Store Profile"),
+          title: const Text("Store Profile"),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -25,7 +25,7 @@ class _StoreProfileState extends State<StoreProfile> {
               Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: [
-                  Container(
+                  SizedBox(
                     // color: Colors.red,
                     width: double.infinity,
                     child: Image.network(
@@ -33,7 +33,7 @@ class _StoreProfileState extends State<StoreProfile> {
                     height: 150,
                   ),
                   Container(
-                    color: Color.fromARGB(255, 49, 47, 47).withOpacity(0.8),
+                    color: const Color.fromARGB(255, 49, 47, 47).withOpacity(0.8),
                     width: double.infinity,
                     child: const Padding(
                       padding: EdgeInsets.all(8),
@@ -52,15 +52,15 @@ class _StoreProfileState extends State<StoreProfile> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
-                      CustomTextField(
+                      const CustomTextField(
                         title: "Store Name",
                         icon: Icons.storefront_rounded,
                       ),
-                      CustomTextField(
+                      const CustomTextField(
                         title: "Phone Number",
                         icon: Icons.phone,
                       ),
-                      CustomTextField(
+                      const CustomTextField(
                         title: "Address",
                         icon: Icons.location_on,
                       ),
@@ -69,20 +69,20 @@ class _StoreProfileState extends State<StoreProfile> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          labelText: "Desciption",
-                          prefixIcon: Icon(Icons.description),
+                          labelText: "Description",
+                          prefixIcon: const Icon(Icons.description),
                         ),
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       CustomButton(
                         text: "Save Changes",
                         press: () {},
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       )
                     ],

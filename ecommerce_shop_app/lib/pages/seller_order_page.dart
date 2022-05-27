@@ -13,7 +13,7 @@ class SellerOrderPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: const Text("My Sales")),
-        body: OrderItem(orderStatus: OrderStatus.inProgress,),
+        body: const OrderItem(orderStatus: OrderStatus.inProgress,),
       ),
     );
   }

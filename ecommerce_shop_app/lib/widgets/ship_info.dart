@@ -22,13 +22,13 @@ class ShipInfo extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: RichText(
             text: TextSpan(
-              text: "Ship Information\n",
-              children: [
-                TextSpan(text: "\nName: $name\n"),
-                TextSpan(text: "Phone Number: $phoneNumber\n"),
-                TextSpan(text: "Address: $address"),
-              ],
-            ),
+                text: "Ship Information\n",
+                children: [
+                  TextSpan(text: "\nName: $name\n"),
+                  TextSpan(text: "Phone Number: $phoneNumber\n"),
+                  TextSpan(text: "Address: $address"),
+                ],
+                style: const TextStyle(color: Colors.black, fontSize: 16)),
             // overflow: TextOverflow.ellipsis,
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/discount_banner.dart';
+// import '../widgets/discount_banner.dart';
 import '../widgets/product_banner.dart';
 import '../widgets/category/categories.dart';
 import '../widgets/product/products.dart';
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
             SliverToBoxAdapter(
               child: ProductBanner(),
             ),
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: Categories(),
             ),
             // SliverToBoxAdapter(
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            Products(0, ""),
+          const Products(0, ""),
           ],
         ),
       ),

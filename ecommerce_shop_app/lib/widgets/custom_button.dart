@@ -24,13 +24,15 @@ class CustomButton extends StatelessWidget {
               : const Color.fromARGB(255, 158, 160, 166),
         ),
         onPressed: press,
-        child: Text(
-          text!,
-          style: const TextStyle(
-            fontSize: (18),
-            color: Colors.white,
-          ),
-        ),
+        child: text != null
+            ? Text(
+                text!,
+                style: const TextStyle(
+                  fontSize: (18),
+                  color: Colors.white,
+                ),
+              )
+            : const CircularProgressIndicator(color: Colors.white),
       ),
     );
   }

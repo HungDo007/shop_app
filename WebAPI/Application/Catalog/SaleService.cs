@@ -223,8 +223,8 @@ namespace Application.Catalog
             {
                 var user = await _userManager.FindByNameAsync(username);
 
-                if (user.EmailConfirmed == false)
-                    return null;
+                //if (user.EmailConfirmed == false)
+                //    return null;
 
                 List<OrderResponse> rp = new List<OrderResponse>();
 
@@ -304,7 +304,7 @@ namespace Application.Catalog
                 await _context.SaveChangesAsync();
                 return rp;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -489,7 +489,7 @@ namespace Application.Catalog
                     };
                     odVms.Add(orderVm);
                 }
-                int a = 1;
+                //int a = 1;
                 if (!string.IsNullOrEmpty(request.Keyword))
                 {
                     odVms = odVms.Where(x => x.Name.Contains(request.Keyword)).ToList();

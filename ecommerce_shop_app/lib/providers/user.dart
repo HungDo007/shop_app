@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ecommerce_shop_app/utils/http_exception.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 
 import '../api/api_url.dart';
 import '../api/http_client.dart';
+import '../utils/http_exception.dart';
 
 class User {
   final String id;
@@ -86,9 +85,7 @@ class UserMethod {
     }
     try {
       // var response = await request.send();
-      var response = await HttpClient().send(request);
-
-      print(response.statusCode);
+      await HttpClient().send(request);
     } catch (e) {
       rethrow;
     }
@@ -103,6 +100,6 @@ class UserMethod {
       }
     } catch (e) {
       rethrow;
-  }
+    }
   }
 }

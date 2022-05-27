@@ -4,25 +4,26 @@ import '../widgets/product/products.dart';
 import '../widgets/product_banner.dart';
 
 class CategoryPage extends StatelessWidget {
-  // const CategoryPage({ Key? key }) : super(key: key);
+  const CategoryPage({Key? key}) : super(key: key);
   static const routeName = "/category";
 
   @override
   Widget build(BuildContext context) {
-    final categoryId = ModalRoute.of(context)!.settings.arguments as int;
+    final category =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return SafeArea(
       child: Scaffold(
         //appBar: AppBar(title: const Text("Products"),),
         body: CustomScrollView(
           slivers: [
-            const SliverAppBar(
-              title: Text("Products"),
+            SliverAppBar(
+              title: Text(category["name"]),
               floating: true,
             ),
             SliverToBoxAdapter(
               child: ProductBanner(),
             ),
-            Products(categoryId, ""),
+            Products(category["id"], ""),
           ],
         ),
       ),

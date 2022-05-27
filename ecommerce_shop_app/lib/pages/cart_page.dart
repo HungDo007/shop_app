@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +9,7 @@ import '../widgets/cart/shop_item.dart';
 import '../widgets/custom_button.dart';
 
 class CartPage extends StatelessWidget {
-  // const CartPage({ Key? key }) : super(key: key);
+  const CartPage({ Key? key }) : super(key: key);
 
   static const routeName = "/cart";
 

@@ -1,10 +1,10 @@
-import 'package:ecommerce_shop_app/pages/user_order_page.dart';
 import 'package:flutter/material.dart';
 
 import '../api/api_url.dart';
 import '../providers/order.dart';
 import '../widgets/ship_info.dart';
 import '../widgets/custom_button.dart';
+import './user_order_page.dart';
 
 class OrderDetailPage extends StatelessWidget {
   const OrderDetailPage({Key? key}) : super(key: key);
@@ -87,6 +87,10 @@ class OrderDetailPage extends StatelessWidget {
                                       text: TextSpan(
                                         text:
                                             "${orderDetailList[index].name}\n",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
                                         children: [
                                           TextSpan(
                                               text: orderDetailList[index]
@@ -105,6 +109,9 @@ class OrderDetailPage extends StatelessWidget {
                                           text: TextSpan(
                                             text:
                                                 "x${orderDetailList[index].quantity}\n",
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                            ),
                                             children: [
                                               TextSpan(
                                                 text:
@@ -179,7 +186,8 @@ class OrderDetailPage extends StatelessWidget {
                               style: const TextStyle(color: Colors.redAccent),
                             ),
                           ],
-                          style: const TextStyle(fontSize: 18),
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.black),
                         ),
                       ),
                     )

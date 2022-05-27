@@ -111,14 +111,19 @@ class OrderItem extends StatelessWidget {
                               //     ),
                               //   ),
                               // ),
-                              Flexible(
+                              Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.only(left: 0),
                                   child: Text(
                                     orderList[index].name,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                orderList[index].paid ? "Paid" : "Not paid",
+                                overflow: TextOverflow.ellipsis,
                               )
                             ],
                           ),
@@ -132,7 +137,9 @@ class OrderItem extends StatelessWidget {
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                                 children: [
-                                  const TextSpan(text: "Total Payment: "),
+                                  const TextSpan(
+                                      text: "Total Payment: ",
+                                      style: TextStyle(color: Colors.black)),
                                   TextSpan(
                                       text: "\$${orderList[index].sumPrice}",
                                       style: const TextStyle(

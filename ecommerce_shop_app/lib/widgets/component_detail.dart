@@ -3,36 +3,17 @@ import 'package:flutter/material.dart';
 import '../utils/handle.dart';
 
 class ComponentDetail extends StatefulWidget {
-  // const ComponentDetail({ Key? key }) : super(key: key);
-  ComponentDetail(this.listComponent, this.price);
-  List<Component> listComponent;
-  double price;
+  const ComponentDetail(
+      {Key? key, required this.listComponent, required this.price})
+      : super(key: key);
+  final List<Component> listComponent;
+  final double price;
   @override
   State<ComponentDetail> createState() => _ComponentDetailState();
 }
 
 class _ComponentDetailState extends State<ComponentDetail> {
   var selected = [];
-
-  void _handleCompo(int id, int idx) {
-    var item = {
-      "id": id,
-      "index": idx,
-    };
-    if (selected.any((item) => item["index"] == idx)) {
-      setState(() {
-        selected.removeWhere((item) => item["index"] == idx);
-        selected.add(item);
-      });
-    } else {
-      setState(() {
-        selected.add(item);
-      });
-    }
-    setState(() {
-      widget.price = 12.5;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +48,7 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                           ? Colors.white
                                           : null,
                                     ),
-                                    onPressed: () =>
-                                        _handleCompo(value.id, index),
+                                    onPressed: () {},
                                     child: Text(value.name),
                                   ),
                                 ))

@@ -18,7 +18,7 @@ class StorePage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
@@ -29,7 +29,7 @@ class StorePage extends StatelessWidget {
                 ],
               ),
               child: Row(
-                children: [
+                children: const [
                   SizedBox(
                     width: 10,
                   ),

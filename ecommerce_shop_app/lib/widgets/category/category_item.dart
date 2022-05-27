@@ -5,15 +5,13 @@ import '../../pages/category_page.dart';
 import '../../api/api_url.dart';
 
 class CategoryItem extends StatelessWidget {
-  // const CategoryItem({
-  //   Key? key,
-  // }) : super(key: key);
+  const CategoryItem({
+    Key? key, required this.id, required this.name, required this.imageUrl,
+  }) : super(key: key);
 
   final int id;
   final String name;
   final String imageUrl;
-
-  CategoryItem(this.id, this.name, this.imageUrl);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class CategoryItem extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: InkWell(
         onTap: () =>
-            Navigator.pushNamed(context, CategoryPage.routeName, arguments: id),
+            Navigator.pushNamed(context, CategoryPage.routeName, arguments: {"id": id, "name":name}),
         splashColor: Colors.grey.withOpacity(0.7),
         child: Stack(
           alignment: AlignmentDirectional.center,
@@ -55,10 +53,11 @@ class CategoryItem extends StatelessWidget {
                 border: Border.all(color: Colors.black),
                 color: Colors.white70,
               ),
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 name,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
             ),

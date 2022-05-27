@@ -19,23 +19,21 @@ class ImageView extends StatelessWidget {
         itemCount: imageLength,
         // pageSnapping: true,
         itemBuilder: (context, pagePosition) {
-          return Container(
-            child: Image.network(
-              ApiUrls.baseUrl + imageUrl[pagePosition],
-              fit: BoxFit.contain,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                );
-              },
-            ),
+          return Image.network(
+            ApiUrls.baseUrl + imageUrl[pagePosition],
+            fit: BoxFit.contain,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
           );
         },
       ),

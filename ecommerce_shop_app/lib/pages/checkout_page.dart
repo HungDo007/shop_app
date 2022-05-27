@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../pages/user_order_page.dart';
 import '../providers/cart.dart';
 import '../providers/user.dart';
 import '../providers/order.dart';
 
+import './payment_page.dart';
 import '../utils/input_validation.dart';
 import '../widgets/ship_info.dart';
 import '../widgets/payment.dart';
@@ -14,8 +14,10 @@ import '../widgets/cart/shop_item.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 
+enum PaymentMethod { cash, paypal }
+
 class CheckoutPage extends StatefulWidget {
-  // const CheckoutPage({Key? key}) : super(key: key);
+  const CheckoutPage({Key? key}) : super(key: key);
 
   static const routeName = "/checkout";
 
@@ -24,12 +26,10 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> with InputValidationMixin {
+  PaymentMethod _method = PaymentMethod.cash;
+
   late Future _userFuture;
-  // final Map<String, String> _shipInfo = {
-  //   'name': '',
-  //   'phone': '',
-  //   'address': '',
-  // };
+
   final _formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
@@ -42,6 +42,12 @@ class _CheckoutPageState extends State<CheckoutPage> with InputValidationMixin {
       nameController.text = "${user.firstName} ${user.lastName}";
       phoneController.text = user.phoneNumber;
       addressController.text = user.address;
+    });
+  }
+
+  void _selectMethod(PaymentMethod? value) {
+    setState(() {
+      _method = value!;
     });
   }
 
@@ -211,7 +217,7 @@ class _CheckoutPageState extends State<CheckoutPage> with InputValidationMixin {
                       .toList(),
                 ),
               ),
-              Payment(),
+              Payment(method: _method, selectMethod: _selectMethod),
             ],
           ),
         ),
@@ -219,29 +225,95 @@ class _CheckoutPageState extends State<CheckoutPage> with InputValidationMixin {
           shipName: nameController.text,
           shipPhone: phoneController.text,
           shipAddress: addressController.text,
+          paymentMethod: _method,
         ),
       ),
     );
   }
 }
 
-class OrderCard extends StatelessWidget {
-  // const OrderCard({Key? key}) : super(key: key);
-
+class OrderCard extends StatefulWidget {
   final String shipName;
   final String shipPhone;
   final String shipAddress;
+  final PaymentMethod paymentMethod;
 
   const OrderCard({
     Key? key,
     required this.shipName,
     required this.shipPhone,
     required this.shipAddress,
+    required this.paymentMethod,
   }) : super(key: key);
 
-  // void _handleOrder() {
-  //   var items = Provider.of(context).
-  // }
+  @override
+  State<OrderCard> createState() => _OrderCardState();
+}
+
+class _OrderCardState extends State<OrderCard> {
+  bool _isLoading = false;
+
+  void _handleOrder(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    var items = Provider.of<Carts>(context, listen: false).selectedShopItems;
+    var data = items.map((item) {
+      var selectedItems = item["items"] as List<Cart>;
+      return {
+        "seller": item["seller"],
+        "shipAddress": widget.shipAddress,
+        "shipName": widget.shipName,
+        "shipPhonenumber": widget.shipPhone,
+        "orderItemId": selectedItems.map((e) => e.cartId).toList(),
+      };
+    }).toList();
+    try {
+      if (widget.paymentMethod == PaymentMethod.cash) {
+        await Orders().order(data);
+        Provider.of<Carts>(context, listen: false).getCart();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Icon(Icons.error, color: Colors.green),
+                Text('Order Successfully!'),
+              ],
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            backgroundColor: Colors.grey,
+            duration: const Duration(milliseconds: 1500),
+          ),
+        );
+        Navigator.pushNamed(context, "/");
+      } else {
+        final url = await Orders().orderPayPal(data);
+        Provider.of<Carts>(context, listen: false).getCart();
+        Navigator.pushNamed(context, PaymentPage.routeName, arguments: url);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Icon(Icons.error, color: Colors.red),
+              Text('Order failed!'),
+            ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          backgroundColor: Colors.grey,
+          duration: const Duration(milliseconds: 1500),
+        ),
+      );
+      rethrow;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -259,9 +331,9 @@ class OrderCard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, -15),
+            offset: const Offset(0, -15),
             blurRadius: 20,
-            color: Color(0xFFDADADA).withOpacity(0.15),
+            color: const Color(0xFFDADADA).withOpacity(0.15),
           )
         ],
       ),
@@ -286,45 +358,8 @@ class OrderCard extends StatelessWidget {
             SizedBox(
               width: 180,
               child: CustomButton(
-                text: "Order",
-                press: () async {
-                  var items = Provider.of<Carts>(context, listen: false)
-                      .selectedShopItems;
-                  var data = items.map((item) {
-                    var selectedItems = item["items"] as List<Cart>;
-                    return {
-                      "seller": item["seller"],
-                      "shipAddress": shipAddress,
-                      "shipName": shipName,
-                      "shipPhonenumber": shipPhone,
-                      "orderItemId":
-                          selectedItems.map((e) => e.cartId).toList(),
-                    };
-                  }).toList();
-                  try {
-                    await Orders().order(data);
-                    Provider.of<Carts>(context, listen: false).getCart();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Icon(Icons.check_circle,
-                                color: Theme.of(context).primaryColor),
-                            const Text('Order successfully!'),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        backgroundColor: Colors.grey,
-                      ),
-                    );
-                    Navigator.pushNamed(context, "/");
-                  } catch (e) {
-                    rethrow;
-                  }
-                },
+                text: _isLoading ? null : "Order",
+                press: () => _handleOrder(context),
               ),
             )
           ],
