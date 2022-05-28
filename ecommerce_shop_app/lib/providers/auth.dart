@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import "package:http/http.dart" as http;
 
 import '../api/http_client.dart';
 import '../api/api_url.dart';
@@ -65,7 +64,7 @@ class Auth with ChangeNotifier {
   Future<void> signUp(String username, String email, String password) async {
     final url = Uri.parse('${ApiUrls.baseUrl}/api/Users/register');
     try {
-      final response = await http.post(url,
+      final response = await HttpClient().post(url,
           body: json.encode({
             'userName': username,
             'email': email,

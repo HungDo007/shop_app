@@ -45,19 +45,19 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
-              children: [
-                Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text('Sign Up successfully!'),
-              ],
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-            backgroundColor: Colors.grey,
-            duration: const Duration(milliseconds: 1500),
+            children: const [
+              Icon(Icons.check_circle, color: Colors.green),
+              SizedBox(
+                width: 10,
+              ),
+              Text('Sign Up successfully!'),
+            ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          backgroundColor: Colors.grey,
+          duration: const Duration(milliseconds: 1500),
         ),
       );
       Navigator.pushNamed(context, "/sign-in");
@@ -105,13 +105,17 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
-                    child: const Text(
+                    child: Text(
                       'StudentShop',
                       style: TextStyle(
-                          color: Colors.orangeAccent,
+                          color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
+                SizedBox(
+                  height: 150,
+                  child: Image.asset("assets/images/sign_up.png"),
+                ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
@@ -204,10 +208,13 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                 ),
                 Container(
                     height: 50,
-                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    margin: const EdgeInsets.symmetric(vertical: 18),
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
-                      child: const Text('Sign Up'),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 20),
+                      ),
                       onPressed: _submit,
                     )),
                 Row(

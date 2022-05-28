@@ -275,9 +275,11 @@ class _OrderCardState extends State<OrderCard> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 Icon(Icons.error, color: Colors.green),
+                SizedBox(
+                  width: 10,
+                ),
                 Text('Order Successfully!'),
               ],
             ),
@@ -298,9 +300,11 @@ class _OrderCardState extends State<OrderCard> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
               Icon(Icons.error, color: Colors.red),
+              SizedBox(
+                width: 10,
+              ),
               Text('Order failed!'),
             ],
           ),

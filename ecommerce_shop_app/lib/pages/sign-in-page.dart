@@ -90,13 +90,17 @@ class _SignInPageState extends State<SignInPage> {
                 Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
-                    child: const Text(
+                    child: Text(
                       'StudentShop',
                       style: TextStyle(
-                          color: Colors.orangeAccent,
+                          color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.w500,
                           fontSize: 35),
                     )),
+                SizedBox(
+                  height: 240,
+                  child: Image.asset("assets/images/sign_in.png"),
+                ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
@@ -141,10 +145,13 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 Container(
                   height: 50,
-                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 18),
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
-                    child: const Text('Sign In'),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(fontSize: 20),
+                    ),
                     onPressed: _submit,
                   ),
                 ),

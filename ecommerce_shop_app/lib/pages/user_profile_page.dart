@@ -247,14 +247,13 @@ class _UserProfilePageState extends State<UserProfilePage>
                                           .showSnackBar(
                                         SnackBar(
                                           content: Row(
-                                            children: [
+                                            children: const [
                                               Icon(Icons.check_circle,
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
-                                              const SizedBox(
+                                                  color: Colors.green),
+                                              SizedBox(
                                                 width: 10,
                                               ),
-                                              const Text(
+                                              Text(
                                                   'Update profile successfully!'),
                                             ],
                                           ),

@@ -38,8 +38,7 @@ class _TabPageState extends State<TabPage> {
   @override
   void initState() {
     _queryController.addListener(() {
-      setState(() {
-              });
+      setState(() {});
     });
     super.initState();
   }
@@ -47,67 +46,72 @@ class _TabPageState extends State<TabPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Container(
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: Center(
-              child: TextField(
-                textInputAction: TextInputAction.search,
-                controller: _queryController,
-                onSubmitted: (keyword) {
-                  if (keyword.length >=2){
-                    Navigator.pushNamed(context, ProductQueryPage.routeName, arguments: keyword);
-                  }
-                },
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _queryController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              setState(() {
-                                _queryController.clear();
-                              });
-                            },
-                          )
-                        : null,
-                    hintText: 'Search...',
-                    border: InputBorder.none),
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(5)),
+              child: Center(
+                child: TextField(
+                  textInputAction: TextInputAction.search,
+                  controller: _queryController,
+                  onSubmitted: (keyword) {
+                    if (keyword.length >= 2) {
+                      Navigator.pushNamed(context, ProductQueryPage.routeName,
+                          arguments: keyword);
+                    }
+                  },
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _queryController.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                setState(() {
+                                  _queryController.clear();
+                                });
+                              },
+                            )
+                          : null,
+                      hintText: 'Search...',
+                      border: InputBorder.none),
+                ),
               ),
             ),
+            actions: [
+              if (Provider.of<Auth>(context, listen: false).isAuthenticate)
+                Consumer<Carts>(
+                  builder: (ctx, cartData, ch) => Badge(
+                    value: cartData.itemCount.toString(),
+                    child: ch!,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Provider.of<Auth>(context, listen: false).isAuthenticate
+                          ? Navigator.pushNamed(context, CartPage.routeName)
+                          : Navigator.pushNamed(context, SignInPage.routeName);
+                    },
+                    icon: const Icon(Icons.shopping_cart),
+                  ),
+                ),
+            ],
           ),
-          actions: [
-            if (Provider.of<Auth>(context, listen: false).isAuthenticate)
-              Consumer<Carts>(
-                builder: (ctx, cartData, ch) => Badge(
-                  value: cartData.itemCount.toString(),
-                  child: ch!,
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    Provider.of<Auth>(context, listen: false).isAuthenticate
-                        ? Navigator.pushNamed(context, CartPage.routeName)
-                        : Navigator.pushNamed(context, SignInPage.routeName);
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                ),
-              ),
-          ],
-        ),
-        body: _widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: _selectPage,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Theme.of(context).primaryColor,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            // BottomNavigationBarItem(icon: Icon(Icons.store), label: "Store"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
-          ],
+          body: _widgetOptions.elementAt(_selectedIndex),
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: _selectPage,
+            currentIndex: _selectedIndex,
+            selectedItemColor: Theme.of(context).primaryColor,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              // BottomNavigationBarItem(icon: Icon(Icons.store), label: "Store"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: "Account"),
+            ],
+          ),
         ),
       ),
     );

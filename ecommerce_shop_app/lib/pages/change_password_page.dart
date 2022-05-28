@@ -67,12 +67,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
-              children: [
-                Icon(Icons.check_circle, color: Theme.of(context).primaryColor),
-                const SizedBox(
+              children: const [
+                Icon(Icons.check_circle, color: Colors.green),
+                SizedBox(
                   width: 10,
                 ),
-                const Text('Change password successfully!'),
+                Text('Change password successfully!'),
               ],
             ),
             shape: RoundedRectangleBorder(
@@ -110,61 +110,55 @@ class _ChangePasswordPageState extends State<ChangePasswordPage>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Form(
-          key: _formKey,
-          child: Card(
-            margin: const EdgeInsets.all(10),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  const Text("Change Password"),
-                  _buildTextFormField(
-                    _oldPassController,
-                    "Old Password",
-                    (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This field is required';
-                      } else if (!isPasswordValid(value)) {
-                        return 'Password has at least 8 character with special character, number and uppercase character';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    _newPassController,
-                    "New Password",
-                    (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This field is required';
-                      } else if (!isPasswordValid(value)) {
-                        return 'Password has at least 8 character with special character, number and uppercase character';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                      _confirmPassController, "Confirm Password", (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'This field is required';
-                    } else if (value != _newPassController.text) {
-                      return 'Passwords do not match!';
-                    }
-                    return null;
-                  }),
-                  CustomButton(
-                    text: "Submit",
-                    press: _submit,
-                  ),
-                ],
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              const Text("Change Password"),
+              _buildTextFormField(
+                _oldPassController,
+                "Old Password",
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field is required';
+                  } else if (!isPasswordValid(value)) {
+                    return '8 character with special char, number and uppercase char';
+                  }
+                  return null;
+                },
               ),
-            ),
+              _buildTextFormField(
+                _newPassController,
+                "New Password",
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field is required';
+                  } else if (!isPasswordValid(value)) {
+                    return '8 character with special char, number and uppercase char';
+                  }
+                  return null;
+                },
+              ),
+              _buildTextFormField(_confirmPassController, "Confirm Password",
+                  (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                } else if (value != _newPassController.text) {
+                  return 'Passwords do not match!';
+                }
+                return null;
+              }),
+              CustomButton(
+                text: "Submit",
+                press: _submit,
+              ),
+            ],
           ),
         ),
-        const Expanded(child: SizedBox())
-      ],
+      ),
     );
   }
 }

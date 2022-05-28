@@ -23,7 +23,7 @@ class AccountPage extends StatelessWidget {
           child: const Text("Sign In"),
           style: ElevatedButton.styleFrom(
             primary: Colors.white,
-            onPrimary: Colors.orange,
+            onPrimary: Theme.of(context).primaryColor,
           ),
         ),
       ),
@@ -58,8 +58,6 @@ class AccountPage extends StatelessWidget {
           ),
         ),
         title: Text(user.username),
-        backgroundColor: Colors.orange,
-        foregroundColor: Colors.white,
         actions: user.username.isEmpty ? _buildAction(context) : null,
       ),
       body: SingleChildScrollView(
